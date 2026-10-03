@@ -5,30 +5,33 @@
   animation: fade-in 0.35s ease;
 }
 
-/* Tamanho e posição fixos (arte 9:16), iguais para todos os NPCs: o balão se sobrepõe
-   à parte de baixo do corpo, como em visual novels. */
+/* Arte 9:16, igual para todos os NPCs. O NPC fica apoiado no topo do balão (--dlg-h, medido
+   pelo DialogueView) com uma pequena sobreposição, como em visual novels; se o balão crescer
+   demais, o NPC encolhe para a cabeça não sair da tela. */
 .npc-layer {
+  --dlg-h: calc(var(--vh) * 30);
+  --npc-max: min(calc(var(--vh) * 64), 760px);
+  --npc-bottom: calc(var(--dlg-h) - var(--vh) * 5);
   position: fixed; left: 0; right: 0; z-index: 30;
-  bottom: calc(var(--vh) * 24);
+  bottom: var(--npc-bottom);
   display: flex; justify-content: center;
   pointer-events: none;
+  transition: bottom 0.25s ease;
 }
 .npc {
   display: block;
   aspect-ratio: 9 / 16;
-  height: min(calc(var(--vh) * 64), 760px);
+  height: max(calc(var(--vh) * 28), min(var(--npc-max), calc(var(--vh) * 98 - var(--npc-bottom))));
   width: auto;
   object-fit: contain;
   object-position: bottom center;
   filter: drop-shadow(0 0 1.2rem rgba(155, 107, 255, 0.45)) drop-shadow(0 0.6rem 1rem rgba(0, 0, 0, 0.6));
   animation: npc-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: height 0.25s ease;
 }
 .npc.is-talking { animation: npc-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), npc-bob 0.9s ease-in-out 0.5s infinite; }
-@media (orientation: portrait) {
-  .npc-layer { bottom: calc(var(--vh) * 34); }
-  .npc { height: min(calc(var(--vh) * 46), 560px); }
-}
-@media (min-width: 2560px) { .npc { height: calc(var(--vh) * 64); } }
+@media (orientation: portrait) { .npc-layer { --npc-max: min(calc(var(--vh) * 46), 560px); } }
+@media (min-width: 2560px) { .npc-layer { --npc-max: calc(var(--vh) * 64); } }
 
 @keyframes npc-in { from { opacity: 0; transform: translateY(2.5rem) scale(0.97); } }
 @keyframes npc-bob { 50% { transform: translateY(-0.25rem); } }

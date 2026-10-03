@@ -60,6 +60,7 @@ export class DialogueView {
   /** Sem microfone (ou por escolha do jogador), as opções viram botões de resposta. */
   private clickMode = false;
   private current: RunningEvent | null = null;
+  private dialogueResize: ResizeObserver | null = null;
 
   constructor(private readonly deps: DialogueDeps) {}
 
@@ -397,6 +398,18 @@ export class DialogueView {
     $('#dlg-name').innerHTML = `${esc(npc.nameJp)}<small>${esc(npc.namePt)}</small>`;
     setLives(0);
     $('#dialogue').hidden = false;
+    this.followDialogueHeight();
+  }
+
+  /** Mantém o NPC apoiado no topo do balão, qualquer que seja a altura dele. */
+  private followDialogueHeight(): void {
+    const dialogue = $('#dialogue');
+    const layer = $('#npc-layer');
+    this.dialogueResize?.disconnect();
+    this.dialogueResize = new ResizeObserver(() => {
+      layer.style.setProperty('--dlg-h', `${dialogue.offsetHeight}px`);
+    });
+    this.dialogueResize.observe(dialogue);
   }
 
   private closeStage(): void {
@@ -404,6 +417,8 @@ export class DialogueView {
     audio.stopVoice();
     remote.cancelListen();
     remote.setState({ mode: 'idle' });
+    this.dialogueResize?.disconnect();
+    this.dialogueResize = null;
     $('#dialogue').hidden = true;
     $('#npc-layer').hidden = true;
     $('#veil').hidden = true;
