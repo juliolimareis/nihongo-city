@@ -1,0 +1,20 @@
+[
+  { "id": "npc_1",  "name_jp": "店員",       "name_pt": "Atendente",            "role_pt": "Atendente jovem de konbini, uniforme listrado e boné" },
+  { "id": "npc_2",  "name_jp": "駅員",       "name_pt": "Funcionário da estação","role_pt": "Uniforme azul-marinho e quepe" },
+  { "id": "npc_3",  "name_jp": "店員",       "name_pt": "Garçom do izakaya",    "role_pt": "Hachimaki na cabeça e avental escuro" },
+  { "id": "npc_4",  "name_jp": "大将",       "name_pt": "Cozinheiro",           "role_pt": "Cozinheiro de ramen, toalha na cabeça, braços cruzados" },
+  { "id": "npc_5",  "name_jp": "神主",       "name_pt": "Sacerdote",            "role_pt": "Sacerdote xintoísta, traje branco e hakama" },
+  { "id": "npc_6",  "name_jp": "近所のおばあさん", "name_pt": "Vizinha",          "role_pt": "Senhora idosa simpática, cardigã e sacola de compras" },
+  { "id": "npc_7",  "name_jp": "書店員",     "name_pt": "Livreiro",             "role_pt": "Vendedor de livraria, óculos e avental verde" },
+  { "id": "npc_8",  "name_jp": "薬剤師",     "name_pt": "Farmacêutica",         "role_pt": "Farmacêutica de jaleco branco" },
+  { "id": "npc_9",  "name_jp": "ゆうき",     "name_pt": "Yuuki (amigo)",        "role_pt": "Amigo(a) universitário(a), roupa casual" },
+  { "id": "npc_10", "name_jp": "佐藤さん",   "name_pt": "Sr. Satō",             "role_pt": "Colega de escritório / vizinho, de terno" },
+  { "id": "npc_11", "name_jp": "警察官",     "name_pt": "Policial",             "role_pt": "Policial do kōban, uniforme azul" },
+  { "id": "npc_12", "name_jp": "観光客",     "name_pt": "Turista",              "role_pt": "Turista perdido com mochila e mapa" },
+  { "id": "npc_13", "name_jp": "店員",       "name_pt": "Atendente do karaokê", "role_pt": "Uniforme com crachá" },
+  { "id": "npc_14", "name_jp": "ショップ店員", "name_pt": "Vendedora",          "role_pt": "Vendedora de moda jovem, estilo Shibuya" },
+  { "id": "npc_15", "name_jp": "店員",       "name_pt": "Garçonete",            "role_pt": "Garçonete de restaurante familiar com bloco de pedidos" },
+  { "id": "npc_16", "name_jp": "駅員",       "name_pt": "Funcionário do metrô", "role_pt": "Funcionário do metrô com luvas brancas" },
+  { "id": "npc_17", "name_jp": "店員",       "name_pt": "Barista",              "role_pt": "Barista de café, avental e boné" },
+  { "id": "npc_18", "name_jp": "番台さん",   "name_pt": "Atendente do sentō",   "role_pt": "Senhor idoso com toalha no pescoço, no balcão do banho público" }
+]

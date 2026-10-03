@@ -1,0 +1,192 @@
+/* ===== Véu + NPC ===== */
+.veil {
+  position: fixed; inset: 0; z-index: 20;
+  background: radial-gradient(ellipse at 50% 40%, rgba(11, 8, 32, 0.25), rgba(11, 8, 32, 0.78));
+  animation: fade-in 0.35s ease;
+}
+
+/* Tamanho e posição fixos (arte 9:16), iguais para todos os NPCs: o balão se sobrepõe
+   à parte de baixo do corpo, como em visual novels. */
+.npc-layer {
+  position: fixed; left: 0; right: 0; z-index: 30;
+  bottom: calc(var(--vh) * 24);
+  display: flex; justify-content: center;
+  pointer-events: none;
+}
+.npc {
+  display: block;
+  aspect-ratio: 9 / 16;
+  height: min(calc(var(--vh) * 64), 760px);
+  width: auto;
+  object-fit: contain;
+  object-position: bottom center;
+  filter: drop-shadow(0 0 1.2rem rgba(155, 107, 255, 0.45)) drop-shadow(0 0.6rem 1rem rgba(0, 0, 0, 0.6));
+  animation: npc-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.npc.is-talking { animation: npc-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), npc-bob 0.9s ease-in-out 0.5s infinite; }
+@media (orientation: portrait) {
+  .npc-layer { bottom: calc(var(--vh) * 34); }
+  .npc { height: min(calc(var(--vh) * 46), 560px); }
+}
+@media (min-width: 2560px) { .npc { height: calc(var(--vh) * 64); } }
+
+@keyframes npc-in { from { opacity: 0; transform: translateY(2.5rem) scale(0.97); } }
+@keyframes npc-bob { 50% { transform: translateY(-0.25rem); } }
+
+/* ===== Balão RPG ===== */
+.dialogue {
+  position: fixed; left: 50%; bottom: 0; z-index: 40;
+  width: min(60rem, 94vw);
+  transform: translateX(-50%);
+  padding-bottom: max(0.8rem, var(--safe-b));
+  animation: rise-in 0.35s ease;
+}
+.dialogue__box {
+  position: relative;
+  padding: 1.6rem 1.4rem 1.1rem;
+  background: linear-gradient(180deg, rgba(22, 14, 58, 0.96), rgba(12, 8, 34, 0.97));
+  border: 3px solid #fff;
+  border-radius: 1rem;
+  box-shadow:
+    0 0 0 3px var(--violet),
+    0 0 1.6rem rgba(155, 107, 255, 0.55),
+    inset 0 0 0 2px rgba(62, 242, 255, 0.35);
+}
+.dialogue__head { position: absolute; top: -1.2rem; left: 1.2rem; right: 0.8rem; display: flex; align-items: center; gap: 0.6rem; pointer-events: none; }
+.dialogue__head > * { pointer-events: auto; }
+.dialogue__name {
+  padding: 0.2rem 1rem;
+  font-family: var(--font-pixel); font-size: 1.05rem; letter-spacing: 0.05em;
+  background: linear-gradient(135deg, var(--magenta), var(--violet));
+  border: 2px solid #fff; border-radius: 0.5rem;
+  box-shadow: var(--glow-m);
+}
+.dialogue__name small { margin-left: 0.5em; font-family: var(--font-ui); font-size: 0.75rem; opacity: 0.85; }
+.dialogue__lives { margin-left: auto; padding: 0.15rem 0.6rem; background: var(--panel-solid); border: 1px solid var(--line); border-radius: 999px; font-size: 0.85rem; letter-spacing: 0.15em; }
+.dialogue__lives:empty { display: none; }
+.dialogue__close { width: 40px; height: 40px; min-width: 40px; font-size: 0.95rem; }
+.dialogue__body {
+  display: grid; gap: 0.8rem;
+  max-height: calc(calc(var(--vh) * 62) - 3rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.2rem;
+  margin: -0.2rem;
+}
+.dialogue__body p { margin: 0; }
+
+.dlg-line { cursor: pointer; }
+.dlg-text {
+  margin: 0;
+  min-height: 2.6em;
+  font-family: var(--font-jp); font-weight: 700;
+  font-size: clamp(1.25rem, 1rem + 1.2vmin, 2.1rem);
+  line-height: 1.45;
+  text-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.25);
+}
+.dlg-text .caret { display: inline-block; width: 0.5em; color: var(--cyan); animation: blink 0.8s steps(2) infinite; }
+.dlg-sub { display: grid; gap: 0.1rem; opacity: 0; transition: opacity 0.35s; }
+.dlg-sub.is-visible { opacity: 1; }
+.dlg-romaji { color: var(--cyan); font-style: italic; }
+.dlg-pt { color: var(--muted); }
+.dlg-replay { justify-self: start; }
+.dlg-next {
+  justify-self: end; margin-top: -0.4rem;
+  color: var(--cyan); font-size: 1.2rem; line-height: 1;
+  animation: bounce 0.9s ease-in-out infinite;
+}
+.dlg-line-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+
+.dlg-prompt {
+  margin: 0; padding: 0.5rem 0.8rem;
+  border-left: 3px solid var(--gold); background: rgba(255, 209, 102, 0.08);
+  border-radius: 0 0.5rem 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; }
+@media (max-width: 760px), (orientation: portrait) { .options { grid-template-columns: 1fr; } }
+.option {
+  display: grid; gap: 0.15rem; align-content: start;
+  min-height: 56px; padding: 0.6rem 0.8rem;
+  text-align: left;
+  background: rgba(62, 242, 255, 0.06);
+  border: 1px solid var(--line); border-radius: 0.7rem;
+  transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.option:hover, .option:focus-visible { background: rgba(62, 242, 255, 0.14); box-shadow: var(--glow-c); }
+.option__jp { font-family: var(--font-jp); font-weight: 700; font-size: 1.05rem; }
+.option__ro { color: var(--muted); font-size: 0.8rem; font-style: italic; }
+.option__hint { color: var(--cyan); font-size: 0.75rem; }
+.option.is-playing { border-color: var(--cyan); box-shadow: var(--glow-c); }
+.option.is-right { border-color: var(--ok); background: rgba(62, 232, 154, 0.15); }
+.option.is-wrong { border-color: var(--bad); background: rgba(255, 93, 115, 0.15); }
+
+.answer-row {
+  position: sticky; bottom: -0.2rem; z-index: 1;
+  display: flex; align-items: center; justify-content: center; gap: 0.8rem; flex-wrap: wrap;
+  padding: 0.4rem 0;
+  background: linear-gradient(transparent, rgba(12, 8, 34, 0.97) 35%);
+}
+.mic-btn {
+  position: relative;
+  min-height: 56px; padding: 0.7em 2em;
+  font-size: 1.1rem;
+}
+.mic-btn.is-listening { background: linear-gradient(135deg, #ff3e5e, var(--magenta)); animation: mic-pulse 1.1s ease-in-out infinite; }
+.mic-status { min-height: 1.4em; margin: 0; text-align: center; color: var(--muted); font-size: 0.9rem; }
+
+.feedback {
+  display: grid; gap: 0.3rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.7rem;
+  animation: rise-in 0.25s ease;
+}
+.feedback--ok { background: rgba(62, 232, 154, 0.12); border: 1px solid var(--ok); }
+.feedback--bad { background: rgba(255, 93, 115, 0.12); border: 1px solid var(--bad); }
+.feedback__title { margin: 0; font-weight: 900; }
+.feedback--ok .feedback__title { color: var(--ok); }
+.feedback--bad .feedback__title { color: var(--bad); }
+.feedback__said { margin: 0; color: var(--muted); font-size: 0.9rem; }
+.feedback__said .jp { color: var(--text); }
+.feedback p { margin: 0; }
+
+.culture { display: grid; gap: 0.6rem; }
+.culture p { margin: 0; }
+.culture__title { margin: 0; color: var(--gold); font-size: 1.15rem; }
+.culture__text { margin: 0; }
+.culture__result { margin: 0; font-weight: 700; }
+.culture__cards { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.chip { padding: 0.2rem 0.7rem; border-radius: 999px; background: rgba(155, 107, 255, 0.2); border: 1px solid var(--violet); font-family: var(--font-jp); font-size: 0.85rem; }
+.dlg-actions { display: flex; justify-content: flex-end; gap: 0.6rem; flex-wrap: wrap; }
+
+/* "+1 carta" flutuando */
+.float-gain {
+  position: fixed; z-index: 90;
+  padding: 0.3rem 0.9rem;
+  font-weight: 900; color: #fff;
+  background: linear-gradient(135deg, var(--magenta), var(--violet));
+  border-radius: 999px;
+  box-shadow: var(--glow-m);
+  pointer-events: none;
+  animation: float-up 1.4s ease-out forwards;
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes bounce { 50% { transform: translateY(0.25rem); } }
+@keyframes mic-pulse { 50% { box-shadow: 0 0 0 0.6rem rgba(255, 62, 94, 0.25), var(--glow-m); } }
+@keyframes float-up { from { opacity: 0; transform: translate(-50%, 0.5rem) scale(0.8); } 20% { opacity: 1; transform: translate(-50%, 0) scale(1.05); } to { opacity: 0; transform: translate(-50%, -3.5rem); } }
+
+@media (max-width: 640px) {
+  .dialogue { width: 100vw; }
+  .dialogue__box { border-radius: 1rem 1rem 0 0; padding: 1.5rem 1rem 0.9rem; }
+  .dialogue__body { max-height: calc(calc(var(--vh) * 64) - 3rem); gap: 0.6rem; }
+  .dialogue__head { left: 0.8rem; }
+  .dlg-text { min-height: 0; font-size: 1.35rem; }
+  .dlg-prompt { font-size: 0.9rem; padding: 0.4rem 0.7rem; }
+  .options { gap: 0.4rem; }
+  .option { min-height: 48px; padding: 0.4rem 0.7rem; }
+  .option__hint { display: none; }
+  .mic-btn { flex: 1; }
+  .mode-toggle { flex: 1; }
+}

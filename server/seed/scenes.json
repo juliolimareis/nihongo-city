@@ -1,0 +1,20 @@
+[
+  {
+    "id": "shibuya_main",
+    "name_jp": "渋谷スクランブル交差点",
+    "name_pt": "Shibuya — Cruzamento",
+    "image_file": "background_1.jpg",
+    "img_w": 1920,
+    "img_h": 1280,
+    "sort_order": 1
+  },
+  {
+    "id": "shibuya_top",
+    "name_jp": "渋谷・上から",
+    "name_pt": "Shibuya — Vista do alto",
+    "image_file": "background_2.jpg",
+    "img_w": 1920,
+    "img_h": 1280,
+    "sort_order": 2
+  }
+]

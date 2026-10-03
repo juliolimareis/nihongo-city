@@ -1,0 +1,127 @@
+/* A foto 3:2 cobre a tela (como background-size: cover). Ela nunca se move:
+   no celular em pé, só a "janela" (viewport) rola na horizontal. */
+.game { position: fixed; inset: 0; overflow: hidden; }
+
+.viewport {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  background: var(--bg);
+}
+.city {
+  --ratio: 1.5;
+  position: absolute; left: 50%; top: 50%;
+  width: max(100vw, var(--vh) * 100 * var(--ratio));
+  height: max(100vw / var(--ratio), var(--vh) * 100);
+  transform: translate(-50%, -50%);
+  user-select: none;
+}
+.city__img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: opacity 0.4s ease;
+  -webkit-user-drag: none;
+}
+.city.is-switching .city__img,
+.city.is-switching .hotspots { opacity: 0; }
+.hotspots { position: absolute; inset: 0; transition: opacity 0.4s ease; }
+
+/* Celular em pé: altura da tela, rolagem horizontal com o dedo. */
+@media (orientation: portrait) and (max-aspect-ratio: 1/1) {
+  .viewport {
+    overflow-x: auto; overflow-y: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .viewport::-webkit-scrollbar { display: none; }
+  .city {
+    position: relative; left: 0; top: 0; transform: none;
+    width: calc(var(--vh) * 100 * var(--ratio)); height: calc(var(--vh) * 100);
+  }
+}
+
+/* ===== Hotspots ===== */
+.hotspot {
+  position: absolute;
+  padding: 0; margin: 0;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 0.8rem;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.hotspot:hover, .hotspot:focus-visible, .hotspot.is-hint {
+  border-color: var(--cyan);
+  background: rgba(62, 242, 255, 0.08);
+  box-shadow: 0 0 1.2rem rgba(62, 242, 255, 0.45), inset 0 0 1.2rem rgba(62, 242, 255, 0.2);
+  outline: none;
+}
+
+/* Pino neon + placa com o nome */
+.pin {
+  position: absolute; left: 50%; top: 50%;
+  display: flex; flex-direction: column; align-items: center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.pin__icon {
+  display: grid; place-items: center;
+  width: 2.6rem; height: 2.6rem;
+  font-size: 1.35rem;
+  background: rgba(16, 11, 44, 0.85);
+  border: 2px solid var(--magenta);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: var(--glow-m);
+  animation: pin-pulse 2.4s ease-in-out infinite;
+}
+.pin__icon > span { transform: rotate(45deg); }
+.pin__plate {
+  margin-top: 0.45rem; padding: 0.15rem 0.6rem;
+  white-space: nowrap; text-align: center; line-height: 1.25;
+  background: rgba(16, 11, 44, 0.88);
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  font-family: var(--font-jp); font-weight: 700; font-size: 0.9rem;
+  text-shadow: 0 0 0.4rem rgba(62, 242, 255, 0.7);
+  opacity: 0.92;
+  transition: transform 0.2s, opacity 0.2s;
+}
+.pin__plate small { display: block; font-family: var(--font-ui); font-weight: 500; font-size: 0.7rem; color: var(--muted); text-shadow: none; }
+.hotspot:hover .pin__plate, .hotspot:focus-visible .pin__plate { transform: scale(1.08); opacity: 1; }
+.hotspot:hover .pin__icon, .hotspot:focus-visible .pin__icon { border-color: var(--cyan); box-shadow: var(--glow-c); }
+
+/* Ruas: pino amarelo */
+.hotspot--street .pin__icon { border-color: var(--gold); box-shadow: 0 0 0.6rem rgba(255, 209, 102, 0.6); }
+
+/* Placas de borda (locais fora da foto) */
+.hotspot--signpost .pin__icon { display: none; }
+.hotspot--signpost .pin__plate {
+  margin: 0; padding: 0.4rem 0.8rem;
+  border: 2px solid var(--gold); border-radius: 0.4rem;
+  background: rgba(40, 24, 8, 0.9);
+  box-shadow: 0 0 0.8rem rgba(255, 209, 102, 0.4);
+}
+.hotspot--signpost.is-left .pin__plate::before { content: '◀ '; color: var(--gold); }
+.hotspot--signpost.is-right .pin__plate::after { content: ' ▶'; color: var(--gold); }
+
+@keyframes pin-pulse {
+  0%, 100% { transform: rotate(-45deg) translate(0, 0); }
+  50% { transform: rotate(-45deg) translate(0.12rem, -0.12rem); }
+}
+
+/* Durante eventos a cidade fica inerte */
+.game.is-busy .hotspots { pointer-events: none; }
+
+/* ===== Editor de hotspots (?edit=1) ===== */
+.editor .hotspot { border-color: rgba(255, 209, 102, 0.8); border-style: dashed; }
+.editor__draw { position: absolute; border: 2px solid var(--ok); background: rgba(62, 232, 154, 0.15); pointer-events: none; }
+.editor__layer { position: absolute; inset: 0; cursor: crosshair; z-index: 2; }
+.editor__panel {
+  position: fixed; left: 1rem; bottom: 1rem; z-index: 80;
+  width: min(30rem, calc(100vw - 2rem));
+  padding: 0.8rem 1rem;
+  background: var(--panel-solid); border: 1px solid var(--ok); border-radius: var(--radius);
+  font-size: 0.85rem;
+}
+.editor__panel pre { margin: 0.5rem 0; padding: 0.5rem; background: #000; border-radius: 0.4rem; white-space: pre-wrap; word-break: break-all; }

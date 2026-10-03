@@ -1,0 +1,13 @@
+node_modules/
+server/db/*.db
+server/db/*.db-*
+server/certs/
+public/build/
+scripts/.venv/
+__pycache__/
+dist/
+
+# Material de terceiros usado só na curadoria (não redistribuir)
+ref-files/
+server/seed/anki_raw.json
+audios/voices/anki_*.mp3

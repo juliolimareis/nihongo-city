@@ -1,0 +1,19 @@
+{
+  // Só checagem de tipos: quem compila é o esbuild (server/src/infrastructure/build).
+  // lib ES2019: evita usar sem querer APIs que o Chromium 79 (TV LG webOS 6) não tem.
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2019", "DOM", "DOM.Iterable"],
+    "types": [],
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["./**/*.ts", "../shared/**/*.ts"]
+}

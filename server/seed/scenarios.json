@@ -1,0 +1,897 @@
+[
+  {
+    "id": "konbini_bento", "kind": "location", "location": "konbini", "npc": "npc_1",
+    "title": "Aquecer o bentô",
+    "culture": "Quando você entra numa konbini e ouve 「いらっしゃいませ」, não precisa responder — um aceno leve com a cabeça basta. Desde 2020 as sacolas plásticas são pagas (レジ袋有料化), por isso o atendente sempre pergunta se você quer uma.",
+    "farewell": "mata_okoshi_kudasaimase",
+    "steps": [
+      { "key": "s1", "npc": "obentou_atatamemasu_ka", "prompt": "O atendente pergunta se deve esquentar seu bentô. Aceite educadamente.",
+        "options": [
+          { "expr": "hai_onegaishimasu", "ok": true, "fb": "「はい、お願いします」 é a forma educada padrão de aceitar uma oferta de serviço.", "next": "s2" },
+          { "expr": "itadakimasu", "fb": "「いただきます」 se diz antes de começar a comer, não para aceitar um serviço." },
+          { "expr": "oyasuminasai", "fb": "「おやすみなさい」 é 'boa noite' só antes de dormir." }
+        ] },
+      { "key": "s2", "npc": "fukuro_wa_goriyou_desu_ka", "prompt": "Ele pergunta se você vai usar sacola. Você NÃO precisa de sacola.",
+        "options": [
+          { "expr": "daijoubu_desu", "ok": true, "fb": "「大丈夫です」 ('está tudo bem') é o jeito natural de recusar no Japão. Brasileiros costumam estranhar: aqui ele significa 'não precisa'.", "next": "s3" },
+          { "expr": "douitashimashite", "fb": "「どういたしまして」 é 'de nada' — resposta a um agradecimento." },
+          { "expr": "hajimemashite", "fb": "「初めまして」 só se usa ao ser apresentado a alguém." }
+        ] },
+      { "key": "s3", "npc": "omatase_shimashita_arigatou", "prompt": "Seu bentô está pronto. Agradeça de forma curta.",
+        "options": [
+          { "expr": "doumo", "ok": true, "fb": "「どうも」 é um agradecimento curto e muito natural em lojas." },
+          { "expr": "irasshaimase", "fb": "「いらっしゃいませ」 só quem trabalha na loja diz, para receber clientes." },
+          { "expr": "gochisousama_deshita", "fb": "「ごちそうさまでした」 se diz depois de comer — você nem abriu o bentô ainda!" }
+        ] }
+    ]
+  },
+  {
+    "id": "konbini_point", "kind": "location", "location": "konbini", "npc": "npc_1",
+    "title": "Cartão de pontos e pagamento",
+    "culture": "No caixa, o dinheiro é colocado na bandejinha (カルトン), e não entregue na mão. Cartões de transporte como Suica e PASMO pagam quase tudo em konbini.",
+    "farewell": "mata_okoshi_kudasaimase",
+    "steps": [
+      { "key": "s1", "npc": "pointo_kaado_wa_omochi_desu_ka", "prompt": "Ele pergunta se você TEM cartão de pontos. Você não tem.",
+        "options": [
+          { "expr": "iie_motte_imasen", "ok": true, "fb": "「持っていません」 = 'não tenho'. 持つ (ter/segurar) no presente contínuo indica posse.", "next": "s2" },
+          { "expr": "otsukaresama_desu", "fb": "「お疲れ様です」 é usado entre colegas de trabalho, não com o caixa." },
+          { "expr": "kanpai", "fb": "「乾杯」 é 'saúde!' para brindar." }
+        ] },
+      { "key": "s2", "npc": "oshiharai_wa_dou_nasaimasu_ka", "prompt": "Como você vai pagar?",
+        "options": [
+          { "expr": "kaado_de_onegaishimasu", "ok": true, "fb": "Perfeito! A partícula で indica o meio: カードで = 'com cartão'." },
+          { "expr": "genkin_de_onegaishimasu", "ok": true, "fb": "Perfeito! 現金で = 'em dinheiro'. で indica o meio." },
+          { "expr": "okaikei_onegaishimasu", "fb": "「お会計お願いします」 é pedir a conta num restaurante. No caixa da konbini você já está pagando." }
+        ] }
+    ]
+  },
+  {
+    "id": "eki_platform", "kind": "location", "location": "eki", "npc": "npc_2",
+    "title": "Qual é a plataforma?",
+    "culture": "〜行き significa 'com destino a'. A linha Yamanote (山手線) é circular e passa por Shibuya, Shinjuku, Tóquio e Ueno. No trem, fale baixo e não atenda ligações — deixe o celular em マナーモード (silencioso).",
+    "farewell": "oki_wo_tsukete",
+    "steps": [
+      { "key": "s1", "npc": "dou_saremashita_ka", "prompt": "Pergunte educadamente de qual plataforma sai o trem para Shinjuku.",
+        "options": [
+          { "expr": "shinjuku_iki_wa_nanbansen_desu_ka", "ok": true, "fb": "Ótimo! 何番線 = 'qual número de plataforma'. Com funcionários use です/ますか.", "next": "s2" },
+          { "expr": "shinjuku_iki_nanbansen", "fb": "Funciona entre amigos, mas é casual demais com um funcionário. Use 「〜は何番線ですか」." },
+          { "expr": "tadaima", "fb": "「ただいま」 é 'cheguei' — só ao chegar em casa." }
+        ] },
+      { "key": "s2", "npc": "yamanotesen_no_sanbansen_desu", "prompt": "Confirme a informação e agradeça (ou peça para repetir).",
+        "options": [
+          { "expr": "sanbansen_desu_ne_arigatou", "ok": true, "fb": "Repetir a informação com 〜ですね é um ótimo hábito: confirma e mostra que você entendeu." },
+          { "expr": "mou_ichido_onegaishimasu", "ok": true, "fb": "「もう一度お願いします」 = 'mais uma vez, por favor'. Frase salva-vidas!", "next": "s2" },
+          { "expr": "ittekimasu", "fb": "「いってきます」 se diz ao sair de casa (para quem fica)." }
+        ] }
+    ]
+  },
+  {
+    "id": "eki_suica", "kind": "location", "location": "eki", "npc": "npc_2",
+    "title": "Saldo insuficiente no Suica",
+    "culture": "Se o saldo não bastar na saída, use a máquina de ajuste (精算機) antes das catracas. Pode recarregar (チャージ) nas máquinas de bilhete e até no caixa de konbinis.",
+    "farewell": "oki_wo_tsukete",
+    "steps": [
+      { "key": "s1", "npc": "zandaka_ga_tarinai_you_desu", "prompt": "A catraca apitou. Pergunte onde pode recarregar.",
+        "options": [
+          { "expr": "chaaji_wa_doko_de_dekimasu_ka", "ok": true, "fb": "どこでできますか = 'onde posso fazer?'. チャージ é 'recarga' em japonês.", "next": "s2" },
+          { "expr": "daijoubu_desu", "fb": "「大丈夫です」 soaria como 'tudo bem, não precisa' — mas você precisa resolver o saldo!" },
+          { "expr": "itadakimasu", "fb": "「いただきます」 é antes de comer." }
+        ] },
+      { "key": "s2", "npc": "achira_no_seisanki_de_dekimasu", "prompt": "Entendeu onde fica a máquina. Responda.",
+        "options": [
+          { "expr": "wakarimashita_arigatou", "ok": true, "fb": "「わかりました」 = 'entendi'. Junto com o agradecimento, é a resposta perfeita." },
+          { "expr": "kekkou_desu", "fb": "「結構です」 é uma recusa ('não, obrigado') — aqui soaria estranho." },
+          { "expr": "omedetou_gozaimasu", "fb": "「おめでとうございます」 é 'parabéns'." }
+        ] }
+    ]
+  },
+  {
+    "id": "hachiko_meet", "kind": "location", "location": "hachiko", "npc": "npc_9",
+    "title": "Encontro na estátua do Hachikō",
+    "culture": "Hachikō foi um cão akita que esperou seu dono na estação de Shibuya todos os dias por quase 10 anos depois que ele morreu. Hoje a estátua é o ponto de encontro mais famoso de Tóquio. O diálogo 「待った？」「今来たところ」 é quase um ritual — mesmo que você tenha esperado 20 minutos!",
+    "farewell": "jaa_mata_ne",
+    "steps": [
+      { "key": "s1", "npc": "gomen_matta", "prompt": "Seu amigo chegou e pergunta se você esperou muito. Responda com gentileza.",
+        "options": [
+          { "expr": "uun_ima_kita_tokoro", "ok": true, "fb": "「今来たところ」 = 'acabei de chegar'. A resposta gentil clássica, mesmo que não seja bem verdade.", "next": "s2" },
+          { "expr": "hai_totemo_machimashita", "fb": "Honesto demais! Soa como reclamação e deixa o clima pesado." },
+          { "expr": "irasshaimase", "fb": "「いらっしゃいませ」 é a saudação de funcionários de loja." }
+        ] },
+      { "key": "s2", "npc": "doko_iku_onaka_suita", "prompt": "Ele pergunta se você está com fome. Diga que quer comer ramen.",
+        "options": [
+          { "expr": "un_raamen_tabetai", "ok": true, "fb": "〜たい = 'quero ~'. 食べたい = 'quero comer'. Entre amigos, うん é o 'sim' casual." },
+          { "expr": "itadakimasu", "fb": "「いただきます」 só na hora de começar a comer." },
+          { "expr": "gochuumon_wa", "fb": "「ご注文は？」 é o que o garçom pergunta, não o cliente." }
+        ] }
+    ]
+  },
+  {
+    "id": "hachiko_late", "kind": "location", "location": "hachiko", "npc": "npc_9",
+    "title": "Você chegou atrasado",
+    "culture": "Pontualidade é levada a sério. Se for se atrasar, avise antes por mensagem (LINE). Se o trem atrasar, as estações entregam um 遅延証明書 (comprovante de atraso) para mostrar na escola ou no trabalho.",
+    "farewell": "jaa_mata_ne",
+    "steps": [
+      { "key": "s1", "npc": "osokatta_ne_dou_shita_no", "prompt": "Você se atrasou. Peça desculpas e explique que o trem atrasou.",
+        "options": [
+          { "expr": "okurete_gomen_densha_ga_okureta", "ok": true, "fb": "遅れてごめん = 'desculpa o atraso' (casual). Com explicação, fica perfeito.", "next": "s2" },
+          { "expr": "otsukaresama_desu", "fb": "「お疲れ様です」 é do ambiente de trabalho, não para pedir desculpas." },
+          { "expr": "okaerinasai", "fb": "「おかえりなさい」 é para receber quem chega em casa." }
+        ] },
+      { "key": "s2", "npc": "daijoubu_dayo_ja_ikou_ka", "prompt": "Tudo certo! Concorde em ir.",
+        "options": [
+          { "expr": "un_ikou", "ok": true, "fb": "行こう é a forma volitiva casual: 'vamos!'." },
+          { "expr": "itterasshai", "fb": "「いってらっしゃい」 se diz para quem SAI e você fica. Mas você também vai!" },
+          { "expr": "shitsurei_shimasu", "fb": "「失礼します」 é formal demais com um amigo." }
+        ] }
+    ]
+  },
+  {
+    "id": "karaoke_room", "kind": "location", "location": "karaoke", "npc": "npc_13",
+    "title": "Reservar uma sala de karaokê",
+    "culture": "No Japão o karaokê é em salas privadas (カラオケボックス), cobrado por pessoa a cada 30 minutos. フリータイム é o pacote 'tempo livre'. Cantar sozinho (ヒトカラ) é super comum!",
+    "farewell": "mata_okoshi_kudasaimase",
+    "steps": [
+      { "key": "s1", "npc": "nanmeisama_desu_ka", "prompt": "Quantas pessoas? Vocês são DUAS.",
+        "options": [
+          { "expr": "futari_desu", "ok": true, "fb": "Pessoas usam o contador 〜人: ひとり (1), ふたり (2), さんにん (3)...", "next": "s2" },
+          { "expr": "futatsu_desu", "fb": "〜つ conta objetos, não pessoas. Para pessoas: 二人 (ふたり)." },
+          { "expr": "nimai_desu", "fb": "〜枚 conta coisas finas e planas (papel, ingressos). Para pessoas: 二人." }
+        ] },
+      { "key": "s2", "npc": "ojikan_wa_dou_nasaimasu_ka", "prompt": "Quanto tempo? Escolha a duração.",
+        "options": [
+          { "expr": "ichijikan_de_onegaishimasu", "ok": true, "fb": "一時間 = 'uma hora' de duração. で indica a escolha.", "next": "s3" },
+          { "expr": "furii_taimu_de_onegaishimasu", "ok": true, "fb": "フリータイム = pacote de tempo livre. Ótimo para cantar a tarde toda!", "next": "s3" },
+          { "expr": "ichiji_desu", "fb": "一時 = 'uma hora em ponto' (horário). Duração é 一時間 (いちじかん)." }
+        ] },
+      { "key": "s3", "npc": "dorinkubaa_wa_otsuke_shimasu_ka", "prompt": "Ele oferece open bar de bebidas (ドリンクバー). Aceite ou recuse.",
+        "options": [
+          { "expr": "hai_onegaishimasu", "ok": true, "fb": "Aceitar uma oferta: 「はい、お願いします」." },
+          { "expr": "iie_kekkou_desu", "ok": true, "fb": "「いいえ、結構です」 é uma recusa educada a uma oferta." },
+          { "expr": "gochisousama_deshita", "fb": "「ごちそうさまでした」 é depois de comer." }
+        ] }
+    ]
+  },
+  {
+    "id": "famiresu_order", "kind": "location", "location": "famiresu", "npc": "npc_15",
+    "title": "Fazer o pedido na ファミレス",
+    "culture": "Em restaurantes familiares há um botão na mesa (呼び出しボタン) para chamar o garçom — nada de gritar ou acenar. Água é grátis (お冷) e não existe gorjeta. Você paga no caixa (レジ) na saída levando a comanda.",
+    "farewell": "mata_okoshi_kudasaimase",
+    "steps": [
+      { "key": "s1", "npc": "gochuumon_wa_okimari_desu_ka", "prompt": "Peça UM hambúrguer (ハンバーグ).",
+        "options": [
+          { "expr": "hanbaagu_wo_hitotsu_onegaishimasu", "ok": true, "fb": "一つ = 'um' (objeto). 〜を一つお願いします é o padrão para pedir.", "next": "s2" },
+          { "expr": "hitori_desu", "fb": "「一人です」 responde 'quantas pessoas?'. Aqui ela quer o pedido." },
+          { "expr": "oishii_desu", "fb": "「おいしいです」 = 'está gostoso' — você ainda nem comeu!" }
+        ] },
+      { "key": "s2", "npc": "onomimono_wa_ikaga_desu_ka", "prompt": "E para beber?",
+        "options": [
+          { "expr": "dorinkubaa_wo_onegaishimasu", "ok": true, "fb": "ドリンクバー = refil de bebidas à vontade. Muito popular!" },
+          { "expr": "omizu_de_daijoubu_desu", "ok": true, "fb": "Água é grátis no Japão (お冷). 〜で大丈夫です = '~ está bom'." },
+          { "expr": "kanpai", "fb": "「乾杯」 é para brindar, depois que as bebidas chegarem." }
+        ] }
+    ]
+  },
+  {
+    "id": "famiresu_bill", "kind": "location", "location": "famiresu", "npc": "npc_15",
+    "title": "Pagando a conta",
+    "culture": "Não existe gorjeta no Japão — deixar dinheiro na mesa pode até fazer o funcionário correr atrás de você para devolver! Ao sair, dizer 「ごちそうさまでした」 agradece pela refeição.",
+    "farewell": "mata_okoshi_kudasaimase",
+    "steps": [
+      { "key": "s1", "npc": "okaikei_wa_sengohyakuen_desu", "prompt": "A conta é ¥1.500. Pergunte se aceita cartão.",
+        "options": [
+          { "expr": "kaado_de_haraemasu_ka", "ok": true, "fb": "払えますか = 'posso pagar?' (forma potencial de 払う).", "next": "s2" },
+          { "expr": "chippu_wa_ikura_desu_ka", "fb": "Não existe gorjeta no Japão! Perguntar isso causa confusão." },
+          { "expr": "itadakimasu", "fb": "「いただきます」 é antes de comer." }
+        ] },
+      { "key": "s2", "npc": "hai_tsukaemasu", "prompt": "Pagou! Agradeça pela refeição ao sair.",
+        "options": [
+          { "expr": "gochisousama_deshita", "ok": true, "fb": "Isso! 「ごちそうさまでした」 também é dito ao sair do restaurante, agradecendo pela comida." },
+          { "expr": "irasshaimase", "fb": "「いらっしゃいませ」 é dos funcionários." },
+          { "expr": "oyasuminasai", "fb": "「おやすみなさい」 só antes de dormir." }
+        ] }
+    ]
+  },
+  {
+    "id": "drug_cold", "kind": "location", "location": "drugstore", "npc": "npc_8",
+    "title": "Peguei um resfriado",
+    "culture": "Em japonês remédio se 'bebe': 薬を飲む — até comprimido! A ドラッグストア vende remédios sem receita, cosméticos e até comida. Remédios com receita (処方箋) são retirados em farmácias de manipulação (調剤薬局).",
+    "farewell": "odaiji_ni",
+    "steps": [
+      { "key": "s1", "npc": "dou_shimashita_ka", "prompt": "Diga que pegou um resfriado.",
+        "options": [
+          { "expr": "kaze_wo_hikimashita", "ok": true, "fb": "Resfriado usa o verbo ひく: 風邪をひく = 'pegar um resfriado'.", "next": "s2" },
+          { "expr": "kaze_wo_torimashita", "fb": "Erro comum de tradução literal! O verbo certo é ひく: 風邪をひきました." },
+          { "expr": "genki_desu", "fb": "「元気です」 = 'estou bem'. Então por que veio à farmácia? 😄" }
+        ] },
+      { "key": "s2", "npc": "netsu_wa_arimasu_ka", "prompt": "Ela pergunta se você tem febre.",
+        "options": [
+          { "expr": "hai_sukoshi_netsu_ga_arimasu", "ok": true, "fb": "熱がある = 'ter febre'. 少し = 'um pouco'.", "next": "s3" },
+          { "expr": "iie_netsu_wa_arimasen", "ok": true, "fb": "熱はありません = 'não tenho febre'. Note は na negativa.", "next": "s3" },
+          { "expr": "atsui_desu", "fb": "暑い/熱い = 'quente' (clima ou objeto). Febre é 熱がある." }
+        ] },
+      { "key": "s3", "npc": "kono_kusuri_wo_ichinichi_sankai", "prompt": "Ela explica como tomar o remédio. Responda.",
+        "options": [
+          { "expr": "wakarimashita_arigatou", "ok": true, "fb": "Perfeito: 'entendi, obrigado'." },
+          { "expr": "kusuri_wo_tabemasu", "fb": "Remédio se 'bebe' em japonês: 薬を飲みます, nunca 食べます." },
+          { "expr": "itadakimasu", "fb": "「いただきます」 é para refeições." }
+        ] }
+    ]
+  },
+  {
+    "id": "drug_headache", "kind": "location", "location": "drugstore", "npc": "npc_8",
+    "title": "Dor de cabeça",
+    "culture": "Analgésicos comuns no Japão: ロキソニン e イブ. O farmacêutico pode perguntar sobre alergias (アレルギー). Alguns remédios estrangeiros com pseudoefedrina são proibidos de trazer ao Japão.",
+    "farewell": "odaiji_ni",
+    "steps": [
+      { "key": "s1", "npc": "nanika_osagashi_desu_ka", "prompt": "Diga que está com dor de cabeça ou pergunte por remédio para isso.",
+        "options": [
+          { "expr": "zutsuuyaku_wa_arimasu_ka", "ok": true, "fb": "頭痛薬 = remédio para dor de cabeça. 〜はありますか = 'tem ~?'.", "next": "s2" },
+          { "expr": "atama_ga_itai_desu", "ok": true, "fb": "頭が痛い = 'a cabeça dói'. Serve para qualquer parte: お腹が痛い, 歯が痛い...", "next": "s2" },
+          { "expr": "atama_ga_ii_desu", "fb": "頭がいい = 'ser inteligente'! Você queria 頭が痛い (dor de cabeça)." }
+        ] },
+      { "key": "s2", "npc": "kochira_wa_ikaga_desu_ka", "prompt": "Ela sugere um remédio que não dá sono. Decida.",
+        "options": [
+          { "expr": "jaa_kore_ni_shimasu", "ok": true, "fb": "〜にします = 'vou escolher ~'. Muito útil em compras e restaurantes." },
+          { "expr": "kore_wa_ikura_desu_ka", "ok": true, "fb": "「これはいくらですか」 = 'quanto custa isto?'. Essencial!" },
+          { "expr": "nemui_desu", "fb": "「眠いです」 = 'estou com sono'. Ela disse que o remédio NÃO dá sono." }
+        ] }
+    ]
+  },
+  {
+    "id": "honya_manga", "kind": "location", "location": "honya", "npc": "npc_7",
+    "title": "Procurando mangá",
+    "culture": "Livrarias oferecem uma capa de papel grátis (ブックカバー) para proteger o livro e manter o que você lê em privacidade no trem. Ler em pé na loja (立ち読み) é comum, mas muitos mangás vêm lacrados.",
+    "farewell": "mata_okoshi_kudasaimase",
+    "steps": [
+      { "key": "s1", "npc": "nanika_osagashi_desu_ka", "prompt": "Pergunte onde ficam os mangás.",
+        "options": [
+          { "expr": "manga_wa_doko_desu_ka", "ok": true, "fb": "〜はどこですか = 'onde fica ~?'. Uma das frases mais úteis do japonês!", "next": "s2" },
+          { "expr": "manga_wa_itsu_desu_ka", "fb": "いつ = 'quando'. Para lugar, use どこ." },
+          { "expr": "manga_wa_dare_desu_ka", "fb": "だれ = 'quem'. Para lugar, use どこ." }
+        ] },
+      { "key": "s2", "npc": "manga_wa_nikai_desu", "prompt": "Mangás no 2º andar. Agradeça.",
+        "options": [
+          { "expr": "nikai_desu_ne_arigatou", "ok": true, "fb": "Confirmar com 〜ですね + agradecer. No Japão, 一階 é o térreo, então 二階 é o primeiro andar acima.", "next": "s3" },
+          { "expr": "ittekimasu", "fb": "「いってきます」 é dito ao sair de casa." },
+          { "expr": "omedetou_gozaimasu", "fb": "「おめでとうございます」 é 'parabéns'." }
+        ] },
+      { "key": "s3", "npc": "kabaa_wa_okake_shimasu_ka", "prompt": "No caixa, ele oferece uma capa de papel para o livro.",
+        "options": [
+          { "expr": "hai_onegaishimasu", "ok": true, "fb": "Aceitou a ブックカバー! Fica bonito e protege o livro." },
+          { "expr": "iie_daijoubu_desu", "ok": true, "fb": "「いいえ、大丈夫です」 recusa com educação." },
+          { "expr": "douitashimashite", "fb": "「どういたしまして」 responde a um 'obrigado'." }
+        ] }
+    ]
+  },
+  {
+    "id": "shop109_try", "kind": "location", "location": "shop109", "npc": "npc_14",
+    "title": "Provando roupas no 109",
+    "culture": "Tire os sapatos antes de entrar no provador (試着室). Muitas lojas oferecem uma フェイスカバー (capa de rosto) para não sujar a roupa de maquiagem. Se o vendedor insistir, 「見ているだけです」 encerra a abordagem com educação.",
+    "farewell": "mata_okoshi_kudasaimase",
+    "steps": [
+      { "key": "s1", "npc": "kawaii_deshou", "prompt": "Concorde que é fofo e pergunte se pode experimentar — ou diga que só está olhando.",
+        "options": [
+          { "expr": "kawaii_desu_ne_shichaku_shitemo_ii_desu_ka", "ok": true, "fb": "〜てもいいですか = 'posso ~?'. 試着 = provar roupa.", "next": "s2" },
+          { "expr": "miteiru_dake_desu", "ok": true, "fb": "「見ているだけです」 = 'só estou olhando'. Perfeito para vendedores insistentes." },
+          { "expr": "kawaisou_desu_ne", "fb": "Cuidado! かわいそう = 'coitado, que pena'. Fofo é かわいい." }
+        ] },
+      { "key": "s2", "npc": "saizu_wa_ikaga_desu_ka", "prompt": "Como ficou o tamanho?",
+        "options": [
+          { "expr": "chotto_chiisai_desu", "ok": true, "fb": "ちょっと小さい = 'um pouco pequeno'. もう少し大きいの = 'um um pouco maior'." },
+          { "expr": "choudo_ii_desu_kore_wo_kudasai", "ok": true, "fb": "ちょうどいい = 'na medida certa'. これをください = 'vou levar este'." },
+          { "expr": "samui_desu", "fb": "寒い = frio (clima). Não tem a ver com o tamanho." }
+        ] }
+    ]
+  },
+  {
+    "id": "metro_ticket", "kind": "location", "location": "chikatetsu", "npc": "npc_16",
+    "title": "Comprando bilhete para Asakusa",
+    "culture": "As linhas de metrô têm letras e cores: G = linha Ginza (laranja). 一本 = 'direto, sem trocar'. 乗り換え = baldeação. Em Tóquio existem duas empresas de metrô (Tokyo Metro e Toei) — o Suica funciona em ambas.",
+    "farewell": "oki_wo_tsukete",
+    "steps": [
+      { "key": "s1", "npc": "dochira_made_desu_ka", "prompt": "Diga que quer ir ATÉ Asakusa.",
+        "options": [
+          { "expr": "asakusa_made_onegaishimasu", "ok": true, "fb": "まで = 'até'. Para destino, 〜までお願いします.", "next": "s2" },
+          { "expr": "asakusa_kara_kimashita", "fb": "から = 'de' (origem). 浅草から来ました = 'vim de Asakusa'." },
+          { "expr": "konbanwa", "fb": "「こんばんは」 é um cumprimento, não responde a pergunta." }
+        ] },
+      { "key": "s2", "npc": "ginzasen_de_ippon_desu", "prompt": "Ele diz que é direto, sem baldeação. Confirme (ou peça para repetir).",
+        "options": [
+          { "expr": "norikae_nashi_desu_ne", "ok": true, "fb": "なし = 'sem'. Confirmar com 〜ですね é um ótimo hábito." },
+          { "expr": "mou_ichido_onegaishimasu", "ok": true, "fb": "Pedir para repetir é sempre válido!", "next": "s2" },
+          { "expr": "norikae_wa_doko_desu_ka", "fb": "Ele acabou de dizer que NÃO há baldeação (乗り換えはありません)." }
+        ] }
+    ]
+  },
+  {
+    "id": "metro_exit", "kind": "location", "location": "chikatetsu", "npc": "npc_16",
+    "title": "Qual saída?",
+    "culture": "Estações grandes têm dezenas de saídas (出口) com nomes e números (A2, ハチ公口...). Errar a saída pode te deixar a 10 minutos do destino! どちら é a forma educada de どこ.",
+    "farewell": "oki_wo_tsukete",
+    "steps": [
+      { "key": "s1", "npc": "nanika_okomari_desu_ka", "prompt": "Pergunte onde fica a saída Hachikō (ハチ公口).",
+        "options": [
+          { "expr": "hachikouguchi_wa_dochira_desu_ka", "ok": true, "fb": "どちら é a versão educada de どこ. Ótima escolha com funcionários.", "next": "s2" },
+          { "expr": "hachikouguchi_wa_itsu_desu_ka", "fb": "いつ = 'quando'. Para lugar: どこ / どちら." },
+          { "expr": "hachikouguchi_desu", "fb": "Você só disse 'é a saída Hachikō'. Faltou a pergunta: 〜はどちらですか." }
+        ] },
+      { "key": "s2", "npc": "kaidan_wo_agatte_migi_desu", "prompt": "Suba a escada e vire à direita. Confirme e agradeça.",
+        "options": [
+          { "expr": "migi_desu_ne_tasukarimashita", "ok": true, "fb": "右 = direita. 助かりました = 'você me ajudou muito'." },
+          { "expr": "hidari_desu_ne", "fb": "左 = esquerda. Ele disse 右 (direita)!" },
+          { "expr": "kaidan_wo_orimasu", "fb": "降ります = descer. Ele disse 上がって (subir)." }
+        ] }
+    ]
+  },
+  {
+    "id": "cafe_order", "kind": "location", "location": "cafe", "npc": "npc_17",
+    "title": "Café com vista para o cruzamento",
+    "culture": "No Japão o imposto muda se você come no local (店内, 10%) ou leva para viagem (持ち帰り/テイクアウト, 8%) — por isso sempre perguntam! O café do prédio TSUTAYA tem uma das vistas mais famosas do cruzamento de Shibuya.",
+    "farewell": "mata_okoshi_kudasaimase",
+    "steps": [
+      { "key": "s1", "npc": "gochuumon_wo_douzo", "prompt": "Peça um café quente.",
+        "options": [
+          { "expr": "hotto_koohii_wo_onegaishimasu", "ok": true, "fb": "ホットコーヒー = café quente. アイスコーヒー = gelado.", "next": "s2" },
+          { "expr": "koohii_wo_nomimashita", "fb": "飲みました é passado: 'eu bebi café'. Para pedir: 〜をお願いします." },
+          { "expr": "ohisashiburi_desu", "fb": "「お久しぶりです」 é para quem você não vê há muito tempo." }
+        ] },
+      { "key": "s2", "npc": "tennai_de_omeshiagari_desu_ka", "prompt": "Vai beber aqui ou levar?",
+        "options": [
+          { "expr": "tennai_de_onegaishimasu", "ok": true, "fb": "店内 = dentro da loja. 店内で = 'para consumir aqui'." },
+          { "expr": "mochikaeri_de_onegaishimasu", "ok": true, "fb": "持ち帰り = para viagem. Imposto menor (8%)!" },
+          { "expr": "itadakimasu", "fb": "「いただきます」 é antes de comer/beber, não uma resposta." }
+        ] }
+    ]
+  },
+  {
+    "id": "izakaya_enter", "kind": "location", "location": "izakaya", "npc": "npc_3",
+    "title": "Primeira noite no izakaya",
+    "culture": "A お通し é um petisco servido automaticamente e cobrado (¥300–500) como 'taxa de mesa'. É costume aceitar. 「とりあえずビール」 ('por enquanto, cerveja') é a frase mais dita em izakayas. Para chamar o garçom, levante a mão e diga 「すみません！」.",
+    "farewell": "mata_okoshi_kudasaimase",
+    "steps": [
+      { "key": "s1", "npc": "irasshaimase_goyoyaku_wa", "prompt": "Ele pergunta se você tem reserva. Você não tem; são duas pessoas.",
+        "options": [
+          { "expr": "iie_yoyaku_shite_imasen_futari_desu", "ok": true, "fb": "予約していません = 'não fiz reserva'. Já dizer o número de pessoas agiliza.", "next": "s2" },
+          { "expr": "oyasuminasai", "fb": "「おやすみなさい」 só antes de dormir." },
+          { "expr": "tadaima", "fb": "「ただいま」 é ao chegar em casa. A não ser que você more no izakaya 😄" }
+        ] },
+      { "key": "s2", "npc": "onomimono_wa_nani_ni_nasaimasu_ka", "prompt": "Peça a bebida.",
+        "options": [
+          { "expr": "toriaezu_nama_biiru_de", "ok": true, "fb": "とりあえず = 'por enquanto'. 生ビール = chope. Clássico!", "next": "s3" },
+          { "expr": "uuroncha_wo_onegaishimasu", "ok": true, "fb": "ウーロン茶 é a bebida sem álcool mais pedida. Não beber é totalmente normal.", "next": "s3" },
+          { "expr": "gochisousama_deshita", "fb": "「ごちそうさまでした」 é depois de comer." }
+        ] },
+      { "key": "s3", "npc": "omatase_shimashita_otooshi_desu", "prompt": "Chegou um petisco que você não pediu (a お通し). Reaja.",
+        "options": [
+          { "expr": "arigatou_gozaimasu_itadakimasu", "ok": true, "fb": "Isso! A お通し faz parte da experiência. Agradeça e aproveite." },
+          { "expr": "tanonde_imasen", "fb": "「頼んでいません」 soa como reclamação. A お通し é cobrada por costume, como uma taxa de mesa." },
+          { "expr": "oyasuminasai", "fb": "「おやすみなさい」 só antes de dormir." }
+        ] }
+    ]
+  },
+  {
+    "id": "izakaya_bill", "kind": "location", "location": "izakaya", "npc": "npc_3",
+    "title": "Último pedido e a conta",
+    "culture": "ラストオーダー é o último pedido antes de fechar a cozinha. Entre amigos é comum dividir igualmente (割り勘). Pagar separado (別々) pode não ser aceito em grupos grandes.",
+    "farewell": "mata_okoshi_kudasaimase",
+    "steps": [
+      { "key": "s1", "npc": "shitsurei_shimasu_rasuto_oodaa", "prompt": "Último pedido! Peça a conta ou mais um edamame.",
+        "options": [
+          { "expr": "okaikei_onegaishimasu", "ok": true, "fb": "「お会計お願いします」 = 'a conta, por favor'.", "next": "s2" },
+          { "expr": "edamame_wo_mou_hitotsu", "ok": true, "fb": "もう一つ = 'mais um'. Super útil!", "next": "s2b" },
+          { "expr": "okaerinasai", "fb": "「おかえりなさい」 recebe quem chega em casa." }
+        ] },
+      { "key": "s2b", "npc": "kashikomarimashita", "prompt": "Ele confirmou o pedido. Agradeça.",
+        "options": [
+          { "expr": "arigatou_gozaimasu", "ok": true, "fb": "Agradecimento formal padrão.", "next": "s2" },
+          { "expr": "itterasshai", "fb": "「いってらっしゃい」 é para quem sai de casa." },
+          { "expr": "hajimemashite", "fb": "「初めまして」 é para se apresentar." }
+        ] },
+      { "key": "s2", "npc": "okaikei_wa_rokusenen_betsubetsu", "prompt": "São ¥6.000. Ele pergunta se é separado. Escolha.",
+        "options": [
+          { "expr": "issho_de_onegaishimasu", "ok": true, "fb": "一緒で = 'junto'. Depois vocês fazem 割り勘 entre si." },
+          { "expr": "betsubetsu_de_onegaishimasu", "ok": true, "fb": "別々で = 'separado'." },
+          { "expr": "rokusenen_wo_kudasai", "fb": "Você está pedindo ¥6.000 para ele! 😅" }
+        ] }
+    ]
+  },
+  {
+    "id": "ramen_ticket", "kind": "location", "location": "ramen", "npc": "npc_4",
+    "title": "A máquina de tickets",
+    "culture": "Em muitas lojas de ramen você compra um ticket na máquina (食券機) na entrada e entrega no balcão. Fazer barulho ao sugar o macarrão (ズルズル) é normal e até elogio! Coma rápido e libere o lugar — há fila.",
+    "farewell": "maido_ari",
+    "steps": [
+      { "key": "s1", "npc": "irasshai_shokken_wo", "prompt": "Ele pede o ticket. Você não sabe usar a máquina — ou já tem o ticket.",
+        "options": [
+          { "expr": "shokkenki_no_tsukaikata_ga_wakarimasen", "ok": true, "fb": "〜の使い方がわかりません = 'não sei como usar ~'. Frase muito útil!", "next": "s1b" },
+          { "expr": "hai_douzo", "ok": true, "fb": "「はい、どうぞ」 = 'aqui está'. Ao entregar algo.", "next": "s2" },
+          { "expr": "shokken_wo_tabemasu", "fb": "'Vou comer o ticket'? 😄 Entregue o ticket com 「はい、どうぞ」." }
+        ] },
+      { "key": "s1b", "npc": "iriguchi_no_kikai_de_saki_ni", "prompt": "Ele explica: compre primeiro na máquina da entrada.",
+        "options": [
+          { "expr": "wakarimashita_katte_kimasu", "ok": true, "fb": "買ってきます = 'vou comprar e já volto'. 〜てくる indica ir e voltar.", "next": "s2" },
+          { "expr": "iie_kekkou_desu", "fb": "Recusar? Sem ticket, sem ramen!" },
+          { "expr": "ittekimasu", "fb": "Quase! 「いってきます」 é ao sair de casa. Aqui: 「買ってきます」." }
+        ] },
+      { "key": "s2", "npc": "men_no_katasa_wa", "prompt": "Ele pergunta a dureza do macarrão.",
+        "options": [
+          { "expr": "futsuu_de_onegaishimasu", "ok": true, "fb": "普通 = normal. Escolha segura para a primeira vez." },
+          { "expr": "katame_de_onegaishimasu", "ok": true, "fb": "硬め = mais firme. Muitos fãs de ramen preferem!" },
+          { "expr": "oomori_desu", "fb": "大盛り = porção grande. Ele perguntou a dureza (硬さ)." }
+        ] }
+    ]
+  },
+  {
+    "id": "ramen_kaedama", "kind": "location", "location": "ramen", "npc": "npc_4",
+    "title": "Refil de macarrão",
+    "culture": "替え玉 é uma porção extra de macarrão para colocar no caldo que sobrou — típico do ramen de Hakata (tonkotsu). Ao sair, 「ごちそうさまでした」 agradece ao cozinheiro.",
+    "farewell": "maido_ari",
+    "steps": [
+      { "key": "s1", "npc": "kaedama_wa_ikaga_desu_ka", "prompt": "Ele oferece 替え玉 (mais macarrão). Aceite ou diga que está cheio.",
+        "options": [
+          { "expr": "kaedama_onegaishimasu", "ok": true, "fb": "替え玉お願いします! Aproveite o caldo.", "next": "s2" },
+          { "expr": "mou_onaka_ippai_desu", "ok": true, "fb": "お腹いっぱい = 'barriga cheia'.", "next": "s2" },
+          { "expr": "konnichiwa", "fb": "「こんにちは」 é cumprimento — não responde a pergunta." }
+        ] },
+      { "key": "s2", "npc": "arigatou_gozaimashita", "prompt": "Você terminou e está saindo. O que se diz?",
+        "options": [
+          { "expr": "gochisousama_deshita", "ok": true, "fb": "Perfeito! Agradece pela refeição. O cozinheiro vai adorar." },
+          { "expr": "itadakimasu", "fb": "「いただきます」 é ANTES de comer." },
+          { "expr": "irasshaimase", "fb": "「いらっしゃいませ」 é dos funcionários." }
+        ] }
+    ]
+  },
+  {
+    "id": "koban_found", "kind": "location", "location": "koban", "npc": "npc_11",
+    "title": "Achei uma carteira",
+    "culture": "No Japão, a maioria dos objetos perdidos volta para o dono — milhões de ienes em dinheiro são entregues à polícia todo ano. Quem acha tem direito a uma recompensa de 5–20% (報労金). Existe um 交番 (posto policial) em quase todo bairro.",
+    "farewell": "oki_wo_tsukete",
+    "steps": [
+      { "key": "s1", "npc": "dou_shimashita_ka", "prompt": "Diga que achou esta carteira.",
+        "options": [
+          { "expr": "kono_saifu_wo_hiroimashita", "ok": true, "fb": "拾う = achar/pegar do chão. 拾いました = 'achei'.", "next": "s2" },
+          { "expr": "saifu_wo_nakushita", "fb": "なくした = 'perdi'. Você ACHOU: 拾いました." },
+          { "expr": "saifu_wo_kaimashita", "fb": "買いました = 'comprei'." }
+        ] },
+      { "key": "s2", "npc": "doko_de_hiroimashita_ka", "prompt": "Onde você achou? Foi em frente à estação.",
+        "options": [
+          { "expr": "eki_no_mae_de_hiroimashita", "ok": true, "fb": "〜の前 = 'em frente a ~'. で marca o lugar da ação.", "next": "s3" },
+          { "expr": "eki_ni_ikimasu", "fb": "「駅に行きます」 = 'vou à estação'. Ele perguntou onde você achou." },
+          { "expr": "ohayou_gozaimasu", "fb": "Cumprimento — não responde onde." }
+        ] },
+      { "key": "s3", "npc": "onamae_to_denwabangou_wo", "prompt": "Ele pede seu nome e telefone. Concorde.",
+        "options": [
+          { "expr": "hai_wakarimashita", "ok": true, "fb": "「はい、わかりました」 = 'sim, entendi'." },
+          { "expr": "douitashimashite", "fb": "「どういたしまして」 responde a um 'obrigado'." },
+          { "expr": "gochisousama_deshita", "fb": "Depois de comer." }
+        ] }
+    ]
+  },
+  {
+    "id": "koban_lost", "kind": "location", "location": "koban", "npc": "npc_11",
+    "title": "Perdi meu celular",
+    "culture": "〜てしまいました expressa algo que aconteceu sem querer, com arrependimento. Se você perder algo no trem, procure o 忘れ物センター (central de achados) da companhia ferroviária.",
+    "farewell": "oki_wo_tsukete",
+    "steps": [
+      { "key": "s1", "npc": "dou_shimashita_ka", "prompt": "Diga que perdeu seu celular.",
+        "options": [
+          { "expr": "keitai_wo_nakushite_shimaimashita", "ok": true, "fb": "〜てしまいました mostra que foi sem querer e você lamenta.", "next": "s2" },
+          { "expr": "keitai_wo_hiroimashita", "fb": "拾いました = 'achei'. Você PERDEU: なくしました." },
+          { "expr": "keitai_wo_mite_mo_ii_desu_ka", "fb": "'Posso ver seu celular?' — não é o que você quer dizer." }
+        ] },
+      { "key": "s2", "npc": "donna_keitai_desu_ka", "prompt": "Descreva: um smartphone preto.",
+        "options": [
+          { "expr": "kuroi_sumaho_desu", "ok": true, "fb": "黒い = preto. スマホ = smartphone (abreviação de スマートフォン).", "next": "s3" },
+          { "expr": "kuroi_neko_desu", "fb": "黒い猫 = gato preto 🐈‍⬛. Você perdeu um celular!" },
+          { "expr": "genki_desu", "fb": "「元気です」 = 'estou bem'." }
+        ] },
+      { "key": "s3", "npc": "todoitara_renraku_shimasu", "prompt": "Ele vai avisar se aparecer. Responda formalmente.",
+        "options": [
+          { "expr": "yoroshiku_onegaishimasu", "ok": true, "fb": "「よろしくお願いします」 aqui = 'conto com você'. Expressão-chave do japonês." },
+          { "expr": "douitashimashite", "fb": "'De nada' não cabe aqui." },
+          { "expr": "itadakimasu", "fb": "Antes de comer." }
+        ] }
+    ]
+  },
+  {
+    "id": "jinja_sanpai", "kind": "location", "location": "jinja", "npc": "npc_5",
+    "title": "Como rezar no santuário",
+    "culture": "No santuário xintoísta (神社): purifique-se no 手水舎 (mão esquerda, direita, boca — sem encostar a concha na boca). Reze com 二礼二拍手一礼: 2 reverências, 2 palmas, 1 reverência. Em templos budistas (お寺) NÃO se bate palmas. Ao passar pelo 鳥居, ande pelos cantos — o centro é o caminho dos deuses.",
+    "farewell": "oki_wo_tsukete",
+    "steps": [
+      { "key": "s1", "npc": "omairi_desu_ka", "prompt": "Ele pergunta se você veio rezar. Responda.",
+        "options": [
+          { "expr": "hai_omairi_ni_kimashita", "ok": true, "fb": "〜に来ました = 'vim para ~'. お参り = visita para rezar.", "next": "s2" },
+          { "expr": "raamen_wo_tabe_ni_kimashita", "fb": "'Vim comer ramen' — lugar errado! 😄" },
+          { "expr": "tadaima", "fb": "「ただいま」 é ao chegar em casa." }
+        ] },
+      { "key": "s2", "npc": "mazu_chouzuya_de", "prompt": "Primeiro purifique mãos e boca. Pergunte se começa pela mão esquerda.",
+        "options": [
+          { "expr": "hidarite_kara_araimasu_ka", "ok": true, "fb": "から = 'a partir de'. Ótima pergunta!", "next": "s3" },
+          { "expr": "mizu_wo_nomimasu", "fb": "Não se bebe direto da concha! Coloque água na mão, enxágue a boca e cuspa discretamente." },
+          { "expr": "itadakimasu", "fb": "Não é uma refeição." }
+        ] },
+      { "key": "s3", "npc": "nirei_nihakushu_ichirei_desu", "prompt": "Ele ensina: 2 reverências, 2 palmas, 1 reverência. Confirme.",
+        "options": [
+          { "expr": "nirei_nihakushu_ichirei_desu_ne", "ok": true, "fb": "Perfeito! Agora você sabe rezar num santuário." },
+          { "expr": "hakushu_wa_sankai_desu_ka", "fb": "São DUAS palmas (二拍手)." },
+          { "expr": "oyasuminasai", "fb": "Só antes de dormir." }
+        ] }
+    ]
+  },
+  {
+    "id": "jinja_omikuji", "kind": "location", "location": "jinja", "npc": "npc_5",
+    "title": "Tirando a sorte (おみくじ)",
+    "culture": "A おみくじ é um papel com sua sorte: 大吉 (grande sorte) até 凶 (má sorte). Se tirar uma ruim, amarre-a no local indicado do santuário para deixar a má sorte para trás. As boas você pode levar.",
+    "farewell": "oki_wo_tsukete",
+    "steps": [
+      { "key": "s1", "npc": "omikuji_wa_ikaga_desu_ka", "prompt": "Ele oferece a おみくじ por ¥100. Aceite.",
+        "options": [
+          { "expr": "hai_ikkai_onegaishimasu", "ok": true, "fb": "一回 = uma vez. 〜回 conta vezes.", "next": "s2" },
+          { "expr": "okaikei_onegaishimasu", "fb": "'A conta, por favor' — não é um restaurante!" },
+          { "expr": "kanpai", "fb": "'Saúde!' — não cabe aqui." }
+        ] },
+      { "key": "s2", "npc": "a_kyou_desu_ne", "prompt": "Você tirou 凶 (má sorte)! Pergunte o que fazer.",
+        "options": [
+          { "expr": "dou_sureba_ii_desu_ka", "ok": true, "fb": "どうすればいいですか = 'o que eu devo fazer?'. Útil em qualquer apuro.", "next": "s3" },
+          { "expr": "yatta", "fb": "やった！ é comemorar. 凶 é má sorte!" },
+          { "expr": "daikichi_desu_ne", "fb": "大吉 é grande sorte. Você tirou 凶." }
+        ] },
+      { "key": "s3", "npc": "asoko_ni_musunde_kudasai", "prompt": "Ele diz para amarrar ali e deixar a má sorte. Reaja.",
+        "options": [
+          { "expr": "naruhodo_musunde_kimasu", "ok": true, "fb": "なるほど = 'entendi, faz sentido!'. Muito natural em conversas." },
+          { "expr": "motte_kaerimasu", "fb": "Levar o 凶 para casa é levar a má sorte junto!" },
+          { "expr": "omedetou_gozaimasu", "fb": "'Parabéns' pela má sorte? 😅" }
+        ] }
+    ]
+  },
+  {
+    "id": "sento_rules", "kind": "location", "location": "sento", "npc": "npc_18",
+    "title": "Primeira vez no 銭湯",
+    "culture": "No banho público: lave o corpo inteiro ANTES de entrar na banheira (湯船). A toalha nunca entra na água — coloque-a na cabeça. Sem roupa de banho. Muitos 銭湯 aceitam tatuagens (onsens de luxo, nem sempre). Depois do banho, um 牛乳 (leite) gelado é tradição!",
+    "farewell": "yukkuri_shite_itte_ne",
+    "steps": [
+      { "key": "s1", "npc": "irasshai_otona_hitori", "prompt": "Um adulto? Confirme.",
+        "options": [
+          { "expr": "hai_otona_hitori_desu", "ok": true, "fb": "大人 = adulto, 一人 = uma pessoa.", "next": "s2" },
+          { "expr": "nimai_desu", "fb": "〜枚 é para objetos planos. Pessoas: 一人 (ひとり)." },
+          { "expr": "hai_kodomo_desu", "fb": "子供 = criança. Você é adulto!" }
+        ] },
+      { "key": "s2", "npc": "taoru_wa_motteru", "prompt": "Ele pergunta se você tem toalha. Você não tem — pergunte se pode alugar.",
+        "options": [
+          { "expr": "motte_imasen_kariraremasu_ka", "ok": true, "fb": "借りられますか = 'posso pegar emprestado?'.", "next": "s3" },
+          { "expr": "hai_motte_imasu", "ok": true, "fb": "持っています = 'tenho'.", "next": "s3" },
+          { "expr": "taoru_wo_yubune_ni_iremasu", "fb": "Nunca! A toalha não entra na banheira." }
+        ] },
+      { "key": "s3", "npc": "yubune_ni_hairu_mae_ni", "prompt": "Lave o corpo antes de entrar na banheira. Confirme.",
+        "options": [
+          { "expr": "saki_ni_karada_wo_araimasu", "ok": true, "fb": "先に = 'antes / primeiro'. Regra número 1 do 銭湯!" },
+          { "expr": "yubune_de_karada_wo_araimasu", "fb": "Lavar-se DENTRO da banheira é a maior gafe possível!" },
+          { "expr": "mizugi_wo_kimasu", "fb": "No 銭湯 não se usa roupa de banho." }
+        ] }
+    ]
+  },
+  {
+    "id": "kouen_hanami", "kind": "location", "location": "kouen", "npc": "npc_6",
+    "title": "Conversa sobre o tempo",
+    "culture": "Falar do tempo é a forma mais comum de puxar conversa com vizinhos. O お花見 (piquenique sob as cerejeiras) acontece no fim de março/início de abril; as pessoas chegam cedo para reservar lugar com uma lona azul (ブルーシート).",
+    "farewell": "sore_ja_mata",
+    "steps": [
+      { "key": "s1", "npc": "ohayou_ii_tenki_desu_ne", "prompt": "A vizinha comenta o tempo bom. Concorde.",
+        "options": [
+          { "expr": "sou_desu_ne_kimochi_ii_desu_ne", "ok": true, "fb": "そうですね = 'é mesmo'. A resposta-padrão para concordar.", "next": "s2" },
+          { "expr": "konbanwa", "fb": "「こんばんは」 é boa noite — e é de manhã!" },
+          { "expr": "oyasuminasai", "fb": "Só antes de dormir." }
+        ] },
+      { "key": "s2", "npc": "raishuu_wa_ohanami_desu_ne", "prompt": "Ela está animada com o hanami. Responda com entusiasmo.",
+        "options": [
+          { "expr": "watashi_mo_tanoshimi_desu", "ok": true, "fb": "楽しみ = 'ansioso por algo bom'. 私も = 'eu também'." },
+          { "expr": "ii_desu_ne_issho_ni_ikimasen_ka", "ok": true, "fb": "〜ませんか = convite educado: 'que tal irmos juntos?'." },
+          { "expr": "sakura_wa_kirai_desu", "fb": "Dizer que odeia sakura corta a conversa e soa rude." }
+        ] }
+    ]
+  },
+  {
+    "id": "kouen_gomi", "kind": "location", "location": "kouen", "npc": "npc_6",
+    "title": "Cadê a lixeira?",
+    "culture": "Há pouquíssimas lixeiras públicas no Japão (muitas foram retiradas após o ataque com gás sarin em 1995). O costume é levar seu lixo para casa (持ち帰り) — ande sempre com um saquinho.",
+    "farewell": "sore_ja_mata",
+    "steps": [
+      { "key": "s1", "npc": "ano_sumimasen_sono_gomi", "prompt": "A vizinha aponta o lixo que você deixou no banco.",
+        "options": [
+          { "expr": "sumimasen_motte_kaerimasu", "ok": true, "fb": "持って帰ります = 'vou levar para casa'. Exatamente o costume japonês!" },
+          { "expr": "gomibako_wa_doko_desu_ka", "ok": true, "fb": "Boa pergunta! ゴミ箱 = lixeira.", "next": "s1b" },
+          { "expr": "gomi_ga_suki_desu", "fb": "'Eu gosto de lixo'? 😅" }
+        ] },
+      { "key": "s1b", "npc": "kouen_ni_wa_gomibako_ga_nai", "prompt": "Não há lixeiras no parque. Responda.",
+        "options": [
+          { "expr": "sou_nan_desu_ka_motte_kaerimasu", "ok": true, "fb": "そうなんですか = 'ah, é mesmo?' (surpresa). E leva o lixo para casa!" },
+          { "expr": "koko_ni_okimasu", "fb": "'Vou deixar aqui' — exatamente o que não se faz!" },
+          { "expr": "itadakimasu", "fb": "Antes de comer." }
+        ] }
+    ]
+  },
+
+  {
+    "id": "inv_lost_tourist", "kind": "invite", "npc": "npc_12",
+    "title": "Turista perdido",
+    "invite_pt": "Um turista com um mapa parece perdido perto de você…",
+    "invite_jp": "道に迷ったみたい…",
+    "culture": "まっすぐ (reto), 右 (direita), 左 (esquerda) e 〜の前 / 〜の隣 (em frente / ao lado) resolvem quase toda indicação de caminho. Japoneses muitas vezes levam a pessoa até o lugar em vez de explicar!",
+    "farewell": "sumimasen_hoka_no_hito_ni",
+    "steps": [
+      { "key": "s1", "npc": "sumimasen_shibuya_eki_wa", "prompt": "Ele procura a estação de Shibuya. É reto e à esquerda.",
+        "options": [
+          { "expr": "massugu_itte_hidari_desu", "ok": true, "fb": "まっすぐ行って = 'vá reto e...'. A forma て liga ações em sequência.", "next": "s2" },
+          { "expr": "sumimasen_wakarimasen", "ok": true, "fb": "Honestidade educada: 'desculpe, não sei'. Melhor que indicar errado!" },
+          { "expr": "shibuya_eki_ni_ikimasu", "fb": "'Eu vou à estação' — você não respondeu onde fica." }
+        ] },
+      { "key": "s2", "npc": "massugu_hidari_arigatou", "prompt": "Ele agradece. Responda.",
+        "options": [
+          { "expr": "douitashimashite", "ok": true, "fb": "「どういたしまして」 = 'de nada'." },
+          { "expr": "ki_wo_tsukete", "ok": true, "fb": "「気をつけて」 = 'cuide-se / boa viagem'." },
+          { "expr": "itterasshai", "fb": "「いってらっしゃい」 é para família/colegas que saem e vão voltar." }
+        ] }
+    ]
+  },
+  {
+    "id": "inv_obaasan_help", "kind": "invite", "npc": "npc_6",
+    "title": "Uma senhora oferece ajuda",
+    "invite_pt": "Uma senhora percebe que você está confuso olhando o celular.",
+    "invite_jp": "大丈夫？",
+    "culture": "「結構です」 recusa, mas pode soar seco. 「大丈夫です、ありがとうございます」 é mais suave. 助かりました ('você me salvou') é o agradecimento perfeito quando alguém te ajuda.",
+    "farewell": "ki_wo_tsukete_ne",
+    "steps": [
+      { "key": "s1", "npc": "daijoubu_doko_ni_ikitai_no", "prompt": "Ela pergunta aonde você quer ir. Diga que procura o correio.",
+        "options": [
+          { "expr": "yuubinkyoku_wo_sagashite_imasu", "ok": true, "fb": "〜を探しています = 'estou procurando ~'.", "next": "s2" },
+          { "expr": "yuubinkyoku_ga_suki_desu", "fb": "'Eu gosto do correio' — não responde a pergunta 😄" },
+          { "expr": "hajimemashite", "fb": "Apresentação não cabe aqui." }
+        ] },
+      { "key": "s2", "npc": "yuubinkyoku_nara_asoko_yo", "prompt": "Ela mostra onde é e oferece ir junto. Responda.",
+        "options": [
+          { "expr": "daijoubu_desu_tasukarimashita", "ok": true, "fb": "Recusa gentil + 助かりました. Perfeito!" },
+          { "expr": "ii_n_desu_ka_onegaishimasu", "ok": true, "fb": "いいんですか = 'tem certeza? não é incômodo?'. Aceitar com consideração." },
+          { "expr": "kekkou_desu", "fb": "「結構です」 sozinho soa frio depois de uma ajuda tão gentil." }
+        ] }
+    ]
+  },
+  {
+    "id": "inv_friend_call", "kind": "invite", "npc": "npc_9",
+    "title": "Amigo te ligando",
+    "invite_pt": "📱 Seu amigo Yuuki está ligando — ele não te encontra!",
+    "invite_jp": "今どこ？",
+    "culture": "「もしもし」 é usado só ao telefone. Para indicar onde você está, use pontos de referência (目印): lojas, cores, saídas da estação — os endereços japoneses são difíceis até para japoneses!",
+    "farewell": "jaa_mata_ne",
+    "steps": [
+      { "key": "s1", "npc": "moshimoshi_ima_doko", "prompt": "Diga que está na saída sul da estação.",
+        "options": [
+          { "expr": "ima_eki_no_minamiguchi_ni_imasu", "ok": true, "fb": "南口 = saída sul. 〜にいます = 'estou em ~' (para pessoas).", "next": "s2" },
+          { "expr": "moshimoshi_genki_desu", "fb": "Ele perguntou ONDE você está, não como está." },
+          { "expr": "doko_ni_imasu_ka", "fb": "Ele perguntou para você! Responda onde está." }
+        ] },
+      { "key": "s2", "npc": "minamiguchi_ne_mejirushi", "prompt": "Ele pede um ponto de referência.",
+        "options": [
+          { "expr": "akai_kafe_no_mae_ni_imasu", "ok": true, "fb": "〜の前 = em frente a. Cores ajudam muito!", "next": "s3" },
+          { "expr": "basutei_no_chikaku_ni_imasu", "ok": true, "fb": "〜の近く = perto de.", "next": "s3" },
+          { "expr": "akai_desu", "fb": "Só 'é vermelho'? Falta dizer o que é vermelho e onde você está." }
+        ] },
+      { "key": "s3", "npc": "a_mieta_ima_iku_ne", "prompt": "Ele te viu! Responda.",
+        "options": [
+          { "expr": "un_matteru_ne", "ok": true, "fb": "待ってる = 'estou esperando' (casual de 待っている)." },
+          { "expr": "ittekimasu", "fb": "Você não está saindo de casa." },
+          { "expr": "okaerinasai", "fb": "Ele não está chegando em casa." }
+        ] }
+    ]
+  },
+  {
+    "id": "inv_forgot_wallet", "kind": "invite", "npc": "npc_9",
+    "title": "Esqueci a carteira!",
+    "invite_pt": "☕ Você está no café com Yuuki e percebe algo terrível…",
+    "invite_jp": "あれ？財布は？",
+    "culture": "Se alguém paga por você (おごる), devolva rápido ou retribua da próxima vez. Entre amigos, dividir igualmente (割り勘) é o padrão.",
+    "farewell": "jaa_mata_ne",
+    "steps": [
+      { "key": "s1", "npc": "sorosoro_ikou_ka_okaikei", "prompt": "Hora de pagar… e você esqueceu a carteira!",
+        "options": [
+          { "expr": "saifu_wo_wasurete_shimatta", "ok": true, "fb": "忘れてしまった = 'esqueci (sem querer, que pena)'.", "next": "s2" },
+          { "expr": "saifu_wo_hirotta", "fb": "拾った = 'achei'. Você ESQUECEU: 忘れた." },
+          { "expr": "itadakimasu", "fb": "Antes de comer." }
+        ] },
+      { "key": "s2", "npc": "e_daijoubu_kyou_wa_watashi_ga", "prompt": "Ele se oferece para pagar. Agradeça.",
+        "options": [
+          { "expr": "gomen_arigatou_ashita_kaesu_ne", "ok": true, "fb": "返す = devolver. Prometer devolver é o mais educado!" },
+          { "expr": "arigatou_gochisousama", "ok": true, "fb": "ごちそうさま também agradece quando alguém paga a refeição para você." },
+          { "expr": "iie_haraimasen", "fb": "'Não vou pagar' — soa grosseiro!" }
+        ] }
+    ]
+  },
+  {
+    "id": "inv_gomi_neighbor", "kind": "invite", "npc": "npc_6",
+    "title": "O dia do lixo",
+    "invite_pt": "🗑️ Sua vizinha está na área de lixo e acena para você.",
+    "invite_jp": "ちょっといいですか？",
+    "culture": "A separação de lixo é rigorosa: 燃えるゴミ (combustível), 燃えないゴミ (não combustível), 資源ゴミ (recicláveis) e 粗大ゴミ (grandes). Cada tipo tem dia e horário. Deixar o lixo na noite anterior atrai corvos (カラス)!",
+    "farewell": "sore_ja_mata",
+    "steps": [
+      { "key": "s1", "npc": "kyou_wa_moenai_gomi_no_hi", "prompt": "Hoje é dia de lixo não combustível. Pergunte quando é o do combustível.",
+        "options": [
+          { "expr": "moeru_gomi_wa_nanyoubi_desu_ka", "ok": true, "fb": "何曜日 = 'que dia da semana'.", "next": "s2" },
+          { "expr": "ohayou_arigatou", "ok": true, "fb": "Agradecer o aviso também é ótimo." },
+          { "expr": "gomi_ga_suki_desu", "fb": "'Eu gosto de lixo' 😅" }
+        ] },
+      { "key": "s2", "npc": "moeru_gomi_wa_getsu_moku", "prompt": "Segunda e quinta, até às 8h. Confirme.",
+        "options": [
+          { "expr": "getsuyoubi_to_mokuyoubi_desu_ne", "ok": true, "fb": "月曜日 (segunda) e 木曜日 (quinta). Confirmar com ですね!" },
+          { "expr": "yoru_ni_dashitemo_ii_desu_ka", "fb": "Na maioria dos bairros é proibido deixar o lixo na noite anterior." },
+          { "expr": "kayoubi_desu_ne", "fb": "火曜日 é terça. Ela disse segunda e quinta." }
+        ] }
+    ]
+  },
+  {
+    "id": "inv_new_neighbor", "kind": "invite", "npc": "npc_10",
+    "title": "O vizinho novo",
+    "invite_pt": "🏠 Alguém bate à sua porta com um pacotinho nas mãos.",
+    "invite_jp": "ごめんください",
+    "culture": "Ao se mudar, é costume visitar os vizinhos com um pequeno presente (toalha, doces): 引っ越しの挨拶. 「つまらないものですが」 ('é uma coisa sem valor, mas...') é modéstia — nunca concorde que é sem graça!",
+    "farewell": "kore_kara_yoroshiku",
+    "steps": [
+      { "key": "s1", "npc": "hajimemashite_tonari_ni", "prompt": "O vizinho novo se apresenta. Apresente-se também.",
+        "options": [
+          { "expr": "hajimemashite_burajiru_kara_kimashita", "ok": true, "fb": "Apresentação completa: 初めまして + de onde é + よろしくお願いします.", "next": "s2" },
+          { "expr": "ohisashiburi_desu", "fb": "「お久しぶりです」 é para quem você já conhece." },
+          { "expr": "sayounara", "fb": "Já se despedindo? 😅" }
+        ] },
+      { "key": "s2", "npc": "tsumaranai_mono_desu_ga", "prompt": "Ele oferece um presente dizendo 'é uma coisa à toa'. Receba.",
+        "options": [
+          { "expr": "goteinei_ni_arigatou_gozaimasu", "ok": true, "fb": "ご丁寧に = 'que gentileza (formal)'. Resposta perfeita." },
+          { "expr": "tsumaranai_desu_ne", "fb": "Nunca concorde! つまらないものですが é só modéstia." },
+          { "expr": "irimasen", "fb": "Recusar um presente de boas-vindas é muito rude." }
+        ] }
+    ]
+  },
+  {
+    "id": "inv_coworker", "kind": "invite", "npc": "npc_10",
+    "title": "Fim do expediente",
+    "invite_pt": "💼 Seu colega Satō está saindo do escritório.",
+    "invite_jp": "お先に失礼します",
+    "culture": "「お先に失礼します」 ('com licença por sair antes') diz quem sai; quem fica responde 「お疲れ様でした」. Essas frases sustentam o ambiente de trabalho japonês.",
+    "farewell": "otsukaresama_deshita",
+    "steps": [
+      { "key": "s1", "npc": "osaki_ni_shitsurei_shimasu", "prompt": "Ele está indo embora antes de você. Responda.",
+        "options": [
+          { "expr": "otsukaresama_deshita", "ok": true, "fb": "Isso! Quem fica diz 「お疲れ様でした」.", "next": "s2" },
+          { "expr": "itterasshai", "fb": "「いってらっしゃい」 é para quem sai e volta (ex.: sai para uma reunião)." },
+          { "expr": "osaki_ni_shitsurei_shimasu", "fb": "Essa é a frase de quem SAI. Você fica!" }
+        ] },
+      { "key": "s2", "npc": "ashita_no_kaigi_yoroshiku", "prompt": "Ele conta com você na reunião de amanhã.",
+        "options": [
+          { "expr": "kochira_koso_yoroshiku", "ok": true, "fb": "こちらこそ = 'eu é que digo'. Retribui a gentileza." },
+          { "expr": "douitashimashite", "fb": "Não houve agradecimento para responder com 'de nada'." },
+          { "expr": "hajimemashite", "fb": "Vocês já se conhecem!" }
+        ] }
+    ]
+  },
+  {
+    "id": "inv_movie", "kind": "invite", "npc": "npc_9",
+    "title": "Convite para o cinema",
+    "invite_pt": "🎬 Yuuki te chama: 'Vamos ao cinema hoje?'",
+    "invite_jp": "映画、行かない？",
+    "culture": "Japoneses raramente dizem 'não' direto. 「今日はちょっと…」 (deixando a frase no ar) é a recusa educada padrão. Dizer 「行きません」 soa frio.",
+    "farewell": "jaa_mata_ne",
+    "steps": [
+      { "key": "s1", "npc": "kyou_eiga_wo_mi_ni_ikanai", "prompt": "Aceite o convite — ou recuse do jeito japonês.",
+        "options": [
+          { "expr": "ii_ne_ikou", "ok": true, "fb": "いいね！ = 'boa!'. Animado e natural.", "next": "s2" },
+          { "expr": "kyou_wa_chotto", "ok": true, "fb": "「ちょっと…」 é a recusa suave japonesa. Ninguém vai insistir.", "next": "s2b" },
+          { "expr": "eiga_wo_mite_imasu", "fb": "'Estou vendo um filme agora' — não responde o convite." }
+        ] },
+      { "key": "s2", "npc": "nanji_ga_ii", "prompt": "Que horas? Sugira às 7.",
+        "options": [
+          { "expr": "shichiji_wa_dou", "ok": true, "fb": "七時 = 7 horas. 〜はどう？ = 'que tal ~?'" },
+          { "expr": "shichijikan", "fb": "七時間 = 7 horas de DURAÇÃO. Filme longo demais! 😄" },
+          { "expr": "kinou_desu", "fb": "昨日 = ontem." }
+        ] },
+      { "key": "s2b", "npc": "sokka_ja_mata_kondo", "prompt": "Ele entendeu. Combine para outra vez.",
+        "options": [
+          { "expr": "un_mata_kondo", "ok": true, "fb": "また今度 = 'na próxima'. Fecha a conversa com carinho." },
+          { "expr": "omedetou", "fb": "'Parabéns' não cabe aqui." },
+          { "expr": "ittekimasu", "fb": "Você não está saindo de casa." }
+        ] }
+    ]
+  },
+  {
+    "id": "inv_rain_umbrella", "kind": "invite", "npc": "npc_6",
+    "title": "Vai chover",
+    "invite_pt": "🌧️ O céu escureceu e sua vizinha olha para cima preocupada.",
+    "invite_jp": "あら、雨かしら",
+    "culture": "Guarda-chuvas transparentes (ビニール傘) custam ~¥500 em qualquer konbini. Lojas têm suportes ou saquinhos para guarda-chuvas molhados na entrada.",
+    "farewell": "sore_ja_mata",
+    "steps": [
+      { "key": "s1", "npc": "ara_ame_ga_furisou", "prompt": "Ela diz que parece que vai chover. Concorde e pergunte se ela tem guarda-chuva.",
+        "options": [
+          { "expr": "sou_desu_ne_kasa_wo_motte_imasu_ka", "ok": true, "fb": "傘 = guarda-chuva. Mostrar preocupação é muito educado.", "next": "s2" },
+          { "expr": "atsui_desu_ne", "fb": "'Está quente' — não combina com o comentário dela." },
+          { "expr": "ii_tenki_desu_ne", "fb": "'Que tempo bom' quando vai chover soa como ironia — e ironia não funciona bem em japonês." }
+        ] },
+      { "key": "s2", "npc": "iie_wasurechatta", "prompt": "Ela esqueceu. Ofereça o seu guarda-chuva.",
+        "options": [
+          { "expr": "yokattara_kono_kasa_wo", "ok": true, "fb": "よかったら = 'se quiser'. Oferta gentil e sem pressão.", "next": "s3" },
+          { "expr": "zannen_desu_ne", "fb": "'Que pena' — soa um pouco frio quando você pode ajudar." },
+          { "expr": "kasa_wo_kudasai", "fb": "Você está pedindo o guarda-chuva dela!" }
+        ] },
+      { "key": "s3", "npc": "maa_goshinsetsu_ni", "prompt": "Ela agradece sua gentileza.",
+        "options": [
+          { "expr": "iie_douitashimashite", "ok": true, "fb": "「いいえ、どういたしまして」 — modesto e gentil." },
+          { "expr": "itadakimasu", "fb": "Antes de comer." },
+          { "expr": "okaerinasai", "fb": "Recebe quem chega em casa." }
+        ] }
+    ]
+  },
+  {
+    "id": "inv_photo", "kind": "invite", "npc": "npc_9",
+    "title": "Pode tirar uma foto?",
+    "invite_pt": "📸 Um grupo de estudantes se aproxima segurando um celular.",
+    "invite_jp": "すみません…",
+    "culture": "Na hora da foto se diz 「はい、チーズ！」 e o sinal de paz (ピース ✌️) é quase obrigatório. Atenção: foto é 写真を撮る (撮), não 取る.",
+    "farewell": "jaa_mata_ne",
+    "steps": [
+      { "key": "s1", "npc": "shashin_wo_totte_moraemasen_ka", "prompt": "Pedem para você tirar uma foto deles. Aceite.",
+        "options": [
+          { "expr": "ii_desu_yo", "ok": true, "fb": "「いいですよ」 = 'claro, pode ser'.", "next": "s2" },
+          { "expr": "iie_shashin_ga_kirai_desu", "fb": "'Não, odeio fotos' — muito rude!" },
+          { "expr": "hai_tabemasu", "fb": "'Sim, vou comer'? 😄" }
+        ] },
+      { "key": "s2", "npc": "koko_wo_oshite_kudasai", "prompt": "'Aperte aqui.' Prepare todos para a foto!",
+        "options": [
+          { "expr": "hai_torimasu_yo_hai_chiizu", "ok": true, "fb": "撮りますよ = 'vou tirar!'. はい、チーズ！ e pronto." },
+          { "expr": "oshite_kudasai", "fb": "Você repetiu o pedido deles." },
+          { "expr": "oyasuminasai", "fb": "Só antes de dormir." }
+        ] }
+    ]
+  },
+  {
+    "id": "inv_train_seat", "kind": "invite", "npc": "npc_6",
+    "title": "Assento no trem",
+    "invite_pt": "🚃 No trem lotado, uma senhora idosa entra e fica de pé ao seu lado.",
+    "invite_jp": "ふう…混んでるわね",
+    "culture": "Os assentos prioritários (優先席) são para idosos, gestantes e pessoas com deficiência. Perto deles, celular deve ficar no modo silencioso (マナーモード). Ceder lugar com 「どうぞ」 é simples e gentil.",
+    "farewell": "sore_ja_mata",
+    "steps": [
+      { "key": "s1", "npc": "fuu_kyou_wa_konde_imasu_ne", "prompt": "Ofereça seu lugar.",
+        "options": [
+          { "expr": "yokattara_douzo_suwatte_kudasai", "ok": true, "fb": "座ってください = 'sente-se, por favor'. よかったら suaviza.", "next": "s2" },
+          { "expr": "koko_ni_suwatte_mo_ii_desu_ka", "fb": "Isso é PEDIR para sentar. Você quer OFERECER." },
+          { "expr": "konde_imasen_ne", "fb": "'Não está lotado' — mas está!" }
+        ] },
+      { "key": "s2", "npc": "ara_ii_no_arigatou", "prompt": "Ela pergunta se tem certeza. Insista com gentileza.",
+        "options": [
+          { "expr": "douzo_douzo", "ok": true, "fb": "「どうぞ、どうぞ」 repetido = 'por favor, fique à vontade'." },
+          { "expr": "itadakimasu", "fb": "Não é comida." },
+          { "expr": "gochisousama", "fb": "Depois de comer." }
+        ] }
+    ]
+  },
+  {
+    "id": "inv_compliment", "kind": "invite", "npc": "npc_9",
+    "title": "Seu japonês é bom!",
+    "invite_pt": "🗣️ Um japonês ouve você falar e se aproxima sorrindo.",
+    "invite_jp": "日本語、話せるんですか？",
+    "culture": "「日本語、上手ですね」 é dito até para quem só falou こんにちは! Responda com modéstia (謙遜): 「いえいえ、まだまだです」. Aceitar o elogio diretamente soa convencido.",
+    "farewell": "ganbatte_kudasai",
+    "steps": [
+      { "key": "s1", "npc": "nihongo_jouzu_desu_ne", "prompt": "Ele elogia seu japonês. Responda com modéstia.",
+        "options": [
+          { "expr": "iie_mada_mada_desu", "ok": true, "fb": "Modéstia à japonesa! まだまだ = 'ainda falta muito'.", "next": "s2" },
+          { "expr": "hai_jouzu_desu", "fb": "Concordar diretamente soa convencido." },
+          { "expr": "oishii_desu", "fb": "'Está gostoso' 😄" }
+        ] },
+      { "key": "s2", "npc": "dono_kurai_benkyou_shite", "prompt": "Há quanto tempo estuda? Diga 'mais ou menos um ano'.",
+        "options": [
+          { "expr": "ichinen_gurai_benkyou_shite_imasu", "ok": true, "fb": "ぐらい = 'mais ou menos'. 一年 = um ano." },
+          { "expr": "ichinensei_desu", "fb": "一年生 = 'aluno do 1º ano'." },
+          { "expr": "ichijikan_desu", "fb": "一時間 = 'uma hora'. Só uma hora e já fala assim? 😄" }
+        ] }
+    ]
+  }
+]

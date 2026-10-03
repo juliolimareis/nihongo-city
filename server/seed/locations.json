@@ -1,0 +1,21 @@
+[
+  { "id": "eki",        "scene": "shibuya_main", "name_jp": "駅",           "name_pt": "Estação",            "icon": "🚉", "kind": "place",    "x": 14, "y": 31, "w": 23, "h": 14 },
+  { "id": "hachiko",    "scene": "shibuya_main", "name_jp": "ハチ公前",      "name_pt": "Praça Hachikō",      "icon": "🐕", "kind": "place",    "x": 6,  "y": 50, "w": 18, "h": 16 },
+  { "id": "karaoke",    "scene": "shibuya_main", "name_jp": "カラオケ",      "name_pt": "Karaokê",            "icon": "🎤", "kind": "place",    "x": 21, "y": 11, "w": 10, "h": 11 },
+  { "id": "famiresu",   "scene": "shibuya_main", "name_jp": "ファミレス",    "name_pt": "Restaurante familiar","icon": "🍝", "kind": "place",    "x": 50, "y": 29, "w": 12, "h": 7 },
+  { "id": "drugstore",  "scene": "shibuya_main", "name_jp": "ドラッグストア", "name_pt": "Farmácia",           "icon": "💊", "kind": "place",    "x": 47, "y": 37, "w": 11, "h": 13 },
+  { "id": "honya",      "scene": "shibuya_main", "name_jp": "本屋",          "name_pt": "Livraria",           "icon": "📚", "kind": "place",    "x": 81, "y": 59, "w": 10, "h": 9 },
+  { "id": "shop109",    "scene": "shibuya_main", "name_jp": "109",           "name_pt": "Loja de roupas 109", "icon": "👗", "kind": "place",    "x": 76, "y": 13, "w": 9,  "h": 22 },
+  { "id": "chikatetsu", "scene": "shibuya_main", "name_jp": "地下鉄",        "name_pt": "Metrô",              "icon": "🚇", "kind": "place",    "x": 70, "y": 81, "w": 10, "h": 13 },
+  { "id": "kousaten",   "scene": "shibuya_main", "name_jp": "交差点",        "name_pt": "Cruzamento",         "icon": "🚶", "kind": "street",   "x": 36, "y": 70, "w": 26, "h": 16 },
+
+  { "id": "cafe",       "scene": "shibuya_top",  "name_jp": "カフェ",        "name_pt": "Café (TSUTAYA)",     "icon": "☕", "kind": "place",    "x": 54, "y": 14, "w": 18, "h": 30 },
+  { "id": "konbini",    "scene": "shibuya_top",  "name_jp": "コンビニ",      "name_pt": "Loja de conveniência","icon": "🏪", "kind": "place",    "x": 27, "y": 18, "w": 11, "h": 13 },
+  { "id": "izakaya",    "scene": "shibuya_top",  "name_jp": "居酒屋",        "name_pt": "Izakaya (bar)",      "icon": "🏮", "kind": "place",    "x": 76, "y": 10, "w": 14, "h": 16 },
+  { "id": "ramen",      "scene": "shibuya_top",  "name_jp": "ラーメン屋",    "name_pt": "Lamen",              "icon": "🍜", "kind": "place",    "x": 73, "y": 58, "w": 11, "h": 18 },
+  { "id": "koban",      "scene": "shibuya_top",  "name_jp": "交番",          "name_pt": "Posto policial",     "icon": "👮", "kind": "place",    "x": 53, "y": 42, "w": 8,  "h": 9 },
+  { "id": "kousaten2",  "scene": "shibuya_top",  "name_jp": "交差点",        "name_pt": "Cruzamento",         "icon": "🚶", "kind": "street",   "x": 36, "y": 58, "w": 24, "h": 20 },
+  { "id": "jinja",      "scene": "shibuya_top",  "name_jp": "神社",          "name_pt": "Santuário",          "icon": "⛩️", "kind": "signpost", "x": 1,  "y": 40, "w": 10, "h": 9 },
+  { "id": "kouen",      "scene": "shibuya_top",  "name_jp": "公園",          "name_pt": "Parque Yoyogi",      "icon": "🌸", "kind": "signpost", "x": 1,  "y": 62, "w": 10, "h": 9 },
+  { "id": "sento",      "scene": "shibuya_top",  "name_jp": "銭湯",          "name_pt": "Banho público",      "icon": "♨️", "kind": "signpost", "x": 89, "y": 40, "w": 10, "h": 9 }
+]

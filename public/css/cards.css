@@ -1,0 +1,50 @@
+.deck { display: grid; gap: 1rem; }
+.deck__toolbar { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+.deck__toolbar input, .deck__toolbar select {
+  min-height: 44px; padding: 0 0.9rem;
+  background: var(--panel-2); border: 1px solid var(--line); border-radius: 0.7rem;
+}
+.deck__toolbar input { flex: 1 1 14rem; }
+.deck__summary { margin: 0; color: var(--muted); font-size: 0.9rem; }
+.deck__empty { padding: 2rem 1rem; text-align: center; color: var(--muted); }
+.deck__empty strong { display: block; margin-bottom: 0.4rem; color: var(--text); font-size: 1.1rem; }
+
+.deck__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); gap: 0.9rem; }
+
+/* As duas faces ficam na mesma célula do grid: a carta assume a altura da face maior. */
+.flashcard { perspective: 1000px; }
+.flashcard__inner {
+  position: relative; display: grid;
+  min-height: 13rem;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+.flashcard.is-flipped .flashcard__inner { transform: rotateY(180deg); }
+.flashcard__face {
+  grid-area: 1 / 1;
+  display: flex; flex-direction: column; gap: 0.5rem;
+  padding: 1rem;
+  background: linear-gradient(160deg, rgba(40, 26, 96, 0.95), rgba(18, 12, 48, 0.95));
+  border: 1px solid var(--line); border-radius: var(--radius);
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.flashcard__face--front { justify-content: center; align-items: center; text-align: center; cursor: pointer; }
+.flashcard__face--back { transform: rotateY(180deg); }
+.flashcard__face:hover { box-shadow: var(--glow-c); }
+.flashcard__jp { margin: 0; font-family: var(--font-jp); font-weight: 900; font-size: 1.5rem; line-height: 1.35; }
+.flashcard__hint { color: var(--muted); font-size: 0.75rem; }
+.flashcard__tags { display: flex; gap: 0.35rem; flex-wrap: wrap; justify-content: center; }
+.tag { padding: 0.05rem 0.55rem; border-radius: 999px; font-size: 0.7rem; border: 1px solid var(--line); color: var(--muted); }
+.tag--casual { border-color: var(--ok); color: var(--ok); }
+.tag--polido { border-color: var(--cyan); color: var(--cyan); }
+.tag--keigo { border-color: var(--gold); color: var(--gold); }
+.tag--due { border-color: var(--magenta); color: var(--magenta); }
+
+.flashcard__row { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
+.flashcard__kana { margin: 0; font-family: var(--font-jp); font-weight: 700; }
+.flashcard__romaji { margin: 0; color: var(--cyan); font-style: italic; font-size: 0.9rem; }
+.flashcard__pt { margin: 0; font-weight: 700; }
+.flashcard__usage { margin: 0; padding: 0.5rem 0.7rem; background: rgba(255, 209, 102, 0.08); border-left: 3px solid var(--gold); border-radius: 0 0.5rem 0.5rem 0; font-size: 0.85rem; }
+.flashcard__usage b { color: var(--gold); }
+.flashcard__meta { margin: auto 0 0; color: var(--muted); font-size: 0.75rem; }
+.audio-btn { width: 44px; height: 44px; min-width: 44px; font-size: 1rem; }
