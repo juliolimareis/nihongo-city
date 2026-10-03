@@ -9,10 +9,11 @@
 .deck__empty { padding: 2rem 1rem; text-align: center; color: var(--muted); }
 .deck__empty strong { display: block; margin-bottom: 0.4rem; color: var(--text); font-size: 1.1rem; }
 
-.deck__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); gap: 0.9rem; }
+.deck__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); grid-auto-rows: 1fr; gap: 0.9rem; }
 
-/* As duas faces ficam na mesma célula do grid: a carta assume a altura da face maior. */
-.flashcard { perspective: 1000px; }
+/* As duas faces ficam na mesma célula do grid: a carta assume a altura da face maior.
+   Com grid-auto-rows: 1fr, todas as cartas ficam com a altura da maior do baralho. */
+.flashcard { display: grid; perspective: 1000px; }
 .flashcard__inner {
   position: relative; display: grid;
   min-height: 13rem;
