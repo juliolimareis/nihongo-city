@@ -32,11 +32,25 @@ function dedupePlayerNames(db: Db): void {
   })();
 }
 
+/** Colunas acrescentadas depois da primeira versão: CREATE TABLE IF NOT EXISTS não altera bancos já criados. */
+const ADDED_COLUMNS: { table: string; column: string; ddl: string }[] = [
+  { table: 'player_settings', column: 'daily_new_cards', ddl: 'INTEGER NOT NULL DEFAULT 10' },
+  { table: 'player_settings', column: 'daily_reviews', ddl: 'INTEGER NOT NULL DEFAULT 50' },
+];
+
+function addMissingColumns(db: Db): void {
+  for (const { table, column, ddl } of ADDED_COLUMNS) {
+    const columns = db.pragma(`table_info(${table})`) as { name: string }[];
+    if (!columns.some((c) => c.name === column)) db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${ddl}`);
+  }
+}
+
 export function openDatabase(file: string): Db {
   const db = new Database(file);
   db.pragma('journal_mode = WAL');
   db.pragma('foreign_keys = ON');
   dedupePlayerNames(db);
   db.exec(SCHEMA_SQL);
+  addMissingColumns(db);
   return db;
 }

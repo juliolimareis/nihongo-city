@@ -16,6 +16,9 @@ type Key = keyof SettingsDto;
 
 const pct = (v: number): string => `${Math.round(v * 100)}%`;
 const ms = (v: number): string => `${v} ms`;
+const perDay = (v: number): string => `${v} por dia`;
+const FORMATS = { pct, ms, perDay };
+type Format = keyof typeof FORMATS;
 
 export class SettingsView {
   constructor(private readonly deps: SettingsViewDeps) {}
@@ -29,14 +32,15 @@ export class SettingsView {
       </label>`;
   }
 
-  private slider(key: Key, label: string, min: number, max: number, step: number, fmt: (v: number) => string): string {
+  private slider(key: Key, label: string, min: number, max: number, step: number, fmt: Format, hint = ''): string {
     const value = Number(this.deps.store.settings[key]);
     return `
       <label class="setting">
         <span>${label}</span>
-        <output data-out="${key}">${fmt(value)}</output>
-        <input type="range" data-key="${key}" data-fmt="${fmt === pct ? 'pct' : 'ms'}"
+        <output data-out="${key}">${FORMATS[fmt](value)}</output>
+        <input type="range" data-key="${key}" data-fmt="${fmt}"
           min="${min}" max="${max}" step="${step}" value="${value}">
+        ${hint ? `<small>${hint}</small>` : ''}
       </label>`;
   }
 
@@ -47,16 +51,21 @@ export class SettingsView {
         <fieldset>
           <legend>🎵 Som</legend>
           ${this.toggle('music_on', 'Música de fundo')}
-          ${this.slider('music_volume', 'Volume da música', 0, 0.3, 0.01, pct)}
-          ${this.slider('voice_volume', 'Volume das falas', 0.5, 1, 0.05, pct)}
+          ${this.slider('music_volume', 'Volume da música', 0, 0.3, 0.01, 'pct')}
+          ${this.slider('voice_volume', 'Volume das falas', 0.5, 1, 0.05, 'pct')}
           ${this.toggle('sfx_on', 'Efeitos sonoros')}
-          ${this.slider('sfx_volume', 'Volume dos efeitos', 0, 1, 0.05, pct)}
+          ${this.slider('sfx_volume', 'Volume dos efeitos', 0, 1, 0.05, 'pct')}
         </fieldset>
         <fieldset>
           <legend>💬 Diálogos</legend>
           ${this.toggle('show_romaji', 'Mostrar romaji', 'Leitura em letras latinas abaixo do japonês.')}
           ${this.toggle('show_translation', 'Mostrar tradução', 'Desligue para treinar a compreensão.')}
-          ${this.slider('text_speed', 'Intervalo entre letras', 10, 120, 5, ms)}
+          ${this.slider('text_speed', 'Intervalo entre letras', 10, 120, 5, 'ms')}
+        </fieldset>
+        <fieldset>
+          <legend>📖 Estudo</legend>
+          ${this.slider('daily_new_cards', 'Cartas novas', 0, 50, 5, 'perDay', 'Cartas que você ainda não estudou.')}
+          ${this.slider('daily_reviews', 'Revisões', 10, 200, 10, 'perDay', 'Cartas já estudadas em outros dias. As que você errar hoje voltam sem contar no limite.')}
         </fieldset>
         <fieldset>
           <legend>🔔 Convites de eventos</legend>
@@ -84,7 +93,7 @@ export class SettingsView {
       if (el instanceof HTMLInputElement && el.type === 'checkbox') value = el.checked;
       else if (el instanceof HTMLInputElement && el.type === 'range') {
         value = Number(el.value);
-        $(`[data-out="${key}"]`, content).textContent = el.dataset.fmt === 'pct' ? pct(value) : ms(value);
+        $(`[data-out="${key}"]`, content).textContent = FORMATS[el.dataset.fmt as Format](value);
       } else value = el.value;
       this.deps.settings.save({ [key]: value });
     });

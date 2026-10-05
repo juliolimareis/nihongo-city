@@ -1,4 +1,5 @@
 import type {
+  DueCardsResponse,
   AttemptRequest, AttemptResponse, CardDto, CardFilter, FinishEventRequest, FinishEventResponse, InviteDto,
   LoginResponse, PairingDto, ProfileDto, Rating, RemoteAction, RemoteScreen, RemoteState, SceneDto, SettingsDto,
   StartEventRequest, StartEventResponse, StudyMode,
@@ -21,7 +22,7 @@ export interface GameApi {
   nextInvite(player: number): Promise<InviteDto | null>;
   readings(texts: string[]): Promise<{ readings: string[] }>;
   cards(player: number, filter?: CardFilter): Promise<CardDto[]>;
-  dueCards(player: number, limit?: number): Promise<CardDto[]>;
+  dueCards(player: number, limit?: number): Promise<DueCardsResponse>;
   review(player: number, exprId: string, mode: StudyMode, rating: Rating): Promise<CardDto>;
 }
 

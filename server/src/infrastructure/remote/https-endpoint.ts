@@ -4,7 +4,7 @@ import type { HttpsEndpoint } from '../../application/ports';
 export class MutableHttpsEndpoint implements HttpsEndpoint {
   private current: number | null = null;
 
-  constructor(readonly publicHost: string | null) {}
+  constructor(readonly publicHost: string | null, readonly publicUrl: string | null = null) {}
 
   port(): number | null {
     return this.current;

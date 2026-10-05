@@ -98,7 +98,7 @@ export class DeckView {
       if (dueOnly.checked) filter.due = '1';
       const cards = await api.cards(store.player.id, filter);
       if (mine !== seq) return;
-      summary.textContent = `${cards.length} carta(s) — ${store.state.stats.cards} no total, ${store.state.stats.due} para revisar.`;
+      summary.textContent = `${cards.length} carta(s) — ${store.state.stats.cards} no total, ${store.state.stats.due} para revisar (${store.state.stats.dueToday} no limite de hoje).`;
       grid.replaceChildren(...(cards.length
         ? cards.map((c) => this.cardEl(c))
         : [html(`<div class="deck__empty"><strong>Nenhuma carta aqui ainda.</strong>

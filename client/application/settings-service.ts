@@ -30,6 +30,8 @@ export class SettingsService {
     try {
       const saved = await this.api.saveSettings(this.store.player.id, body);
       this.store.state.settings = { ...this.store.settings, ...saved };
+      // O limite diário muda quantas cartas o HUD mostra para hoje.
+      if ('daily_new_cards' in body || 'daily_reviews' in body) this.store.emit('refresh-profile');
     } catch (err) {
       console.warn('Não foi possível salvar as configurações', err);
     }

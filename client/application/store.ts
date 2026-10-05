@@ -17,7 +17,7 @@ export class Store {
   readonly state: GameState = {
     player: null,
     settings: null,
-    stats: { cards: 0, due: 0, events: 0, successes: 0 },
+    stats: { cards: 0, due: 0, dueToday: 0, events: 0, successes: 0 },
     scenes: [],
     eventOpen: false,
     modalOpen: false,

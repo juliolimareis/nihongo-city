@@ -105,7 +105,9 @@ CREATE TABLE IF NOT EXISTS player_settings (
   text_speed        INTEGER NOT NULL DEFAULT 40,     -- ms por caractere
   current_scene     TEXT    NOT NULL DEFAULT 'shibuya_main',
   invites_on        INTEGER NOT NULL DEFAULT 1,
-  invite_frequency  TEXT    NOT NULL DEFAULT 'normal' -- pouco | normal | muito
+  invite_frequency  TEXT    NOT NULL DEFAULT 'normal', -- pouco | normal | muito
+  daily_new_cards   INTEGER NOT NULL DEFAULT 10,     -- cartas novas por dia
+  daily_reviews     INTEGER NOT NULL DEFAULT 50      -- revisões por dia
 );
 
 CREATE TABLE IF NOT EXISTS player_cards (
@@ -155,6 +157,7 @@ CREATE TABLE IF NOT EXISTS review_log (
 CREATE UNIQUE INDEX IF NOT EXISTS idx_players_name ON players(name COLLATE NOCASE);
 
 CREATE INDEX IF NOT EXISTS idx_cards_due     ON player_cards(player_id, due_at);
+CREATE INDEX IF NOT EXISTS idx_reviews_card  ON review_log(player_id, expression_id, reviewed_at);
 CREATE INDEX IF NOT EXISTS idx_events_player ON event_log(player_id, started_at);
 CREATE INDEX IF NOT EXISTS idx_steps_scen    ON scenario_steps(scenario_id, step_order);
 CREATE INDEX IF NOT EXISTS idx_options_step  ON step_options(step_id, option_order);

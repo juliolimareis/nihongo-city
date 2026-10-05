@@ -73,7 +73,7 @@ export class SqlitePlayerStatsQuery extends SqliteStore implements PlayerStatsQu
       (SELECT COUNT(*) FROM event_log WHERE player_id = @p AND outcome IS NOT NULL) AS events,
       (SELECT COUNT(*) FROM event_log WHERE player_id = @p AND outcome = 'success') AS successes`);
 
-  statsFor(playerId: number): StatsDto {
-    return this.query.get({ p: playerId }) as StatsDto;
+  statsFor(playerId: number): Omit<StatsDto, 'dueToday'> {
+    return this.query.get({ p: playerId }) as Omit<StatsDto, 'dueToday'>;
   }
 }

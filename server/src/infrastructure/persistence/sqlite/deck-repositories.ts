@@ -1,6 +1,7 @@
 import type { CardDto, CardFilter } from '../../../../../shared/contracts';
 import { voiceUrl } from '../../../application/assets';
 import { Card } from '../../../domain/deck/card';
+import type { DailyCount, DueCount, DueStage } from '../../../domain/deck/daily-limit';
 import type { Rating, StudyMode } from '../../../domain/deck/rating';
 import type { CardQuery, CardRepository, ReviewLogRepository } from '../../../domain/deck/repositories';
 import { SqliteStore } from './sqlite-store';
@@ -82,9 +83,25 @@ const toCardDto = (r: CardViewRow): CardDto => ({
   lapses: r.lapses, hits: r.hits, misses: r.misses,
 });
 
+const REVIEWED = 'SELECT 1 FROM review_log r WHERE r.player_id = c.player_id AND r.expression_id = c.expression_id';
+
+/** Estágio (DueStage) de uma carta `c`, a partir do histórico de revisões. */
+const STAGE_SQL = `CASE
+  WHEN EXISTS (${REVIEWED} AND r.reviewed_at >= @dayStart) THEN 'learning'
+  WHEN EXISTS (${REVIEWED}) THEN 'review'
+  ELSE 'new' END`;
+
 export class SqliteCardQuery extends SqliteStore implements CardQuery {
   private readonly dueStmt = this.db.prepare(`${CARD_SELECT}
-    WHERE c.player_id = ? AND c.due_at <= datetime('now') ORDER BY c.due_at LIMIT ?`);
+    WHERE c.player_id = @player AND c.due_at <= datetime('now') AND ${STAGE_SQL} = @stage
+    ORDER BY c.due_at LIMIT @limit`);
+  private readonly countDueStmt = this.db.prepare(`
+    SELECT ${STAGE_SQL} AS stage, COUNT(*) AS n FROM player_cards c
+    WHERE c.player_id = @player AND c.due_at <= datetime('now') GROUP BY stage`);
+  private readonly studiedStmt = this.db.prepare(`
+    SELECT COALESCE(SUM(first_at >= @dayStart), 0) AS newCards, COALESCE(SUM(first_at < @dayStart), 0) AS reviews
+    FROM (SELECT MIN(reviewed_at) AS first_at FROM review_log WHERE player_id = @player
+          GROUP BY expression_id HAVING MAX(reviewed_at) >= @dayStart)`);
   private readonly oneStmt = this.db.prepare(`${CARD_SELECT} WHERE c.player_id = ? AND c.expression_id = ?`);
 
   list(playerId: number, filter: CardFilter): CardDto[] {
@@ -101,8 +118,21 @@ export class SqliteCardQuery extends SqliteStore implements CardQuery {
     return rows.map(toCardDto);
   }
 
-  due(playerId: number, limit: number): CardDto[] {
-    return (this.dueStmt.all(playerId, limit) as CardViewRow[]).map(toCardDto);
+  dueByStage(playerId: number, stage: DueStage, dayStart: Date, limit: number): CardDto[] {
+    if (limit <= 0) return [];
+    const rows = this.dueStmt.all({ player: playerId, stage, dayStart: toSqlDate(dayStart), limit }) as CardViewRow[];
+    return rows.map(toCardDto);
+  }
+
+  countDue(playerId: number, dayStart: Date): DueCount {
+    const rows = this.countDueStmt.all({ player: playerId, dayStart: toSqlDate(dayStart) }) as { stage: DueStage; n: number }[];
+    const count: Record<DueStage, number> = { learning: 0, review: 0, new: 0 };
+    for (const r of rows) count[r.stage] = r.n;
+    return count;
+  }
+
+  studiedSince(playerId: number, dayStart: Date): DailyCount {
+    return this.studiedStmt.get({ player: playerId, dayStart: toSqlDate(dayStart) }) as DailyCount;
   }
 
   one(playerId: number, expressionId: string): CardDto | null {

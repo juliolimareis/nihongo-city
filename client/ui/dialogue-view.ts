@@ -440,6 +440,8 @@ export class DialogueView {
       store.state.stats.cards += result.newCards.length;
       store.state.stats.due += result.newCards.length;
       store.emit('profile');
+      // Quantas dessas cartas cabem no limite diário só o servidor sabe.
+      if (result.newCards.length) store.emit('refresh-profile');
       return result;
     } catch (err) {
       console.warn('Falha ao encerrar evento', err);

@@ -76,7 +76,7 @@ Audio files are named by `sha1(tts_text(jp))[:12].mp3` and stored in `audios/voi
 | `GET /api/invites/next` | `GetNextInvite` |
 | `POST /api/reading` | `ConvertReading` (kanji → hiragana via kuromoji) |
 | `/api/players` | `player-routes.ts` → `LoginPlayer`, `GetProfile`, `UpdateSettings`, `ResetProgress` |
-| `/api/cards` | `card-routes.ts` → `ListCards`, `ListDueCards`, `ReviewCard` (SM-2 in `domain/deck/scheduling.ts`) |
+| `/api/cards` | `card-routes.ts` → `ListCards`, `ListDueCards` (daily limit via `StudyDay` + `domain/deck/daily-limit.ts`), `ReviewCard` (SM-2 in `domain/deck/scheduling.ts`) |
 | `/api/remote/*` | `remote-routes.ts` → SSE sessions for phone mic, QR code |
 
 ### Remote phone feature

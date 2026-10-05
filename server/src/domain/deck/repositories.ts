@@ -1,5 +1,6 @@
 import type { CardDto, CardFilter } from '../../../../shared/contracts';
 import type { Card } from './card';
+import type { DailyCount, DueCount, DueStage } from './daily-limit';
 import type { Rating, StudyMode } from './rating';
 
 export interface CardRepository {
@@ -18,6 +19,10 @@ export interface ReviewLogRepository {
 /** Read model do baralho (carta + expressão + acertos/erros). */
 export interface CardQuery {
   list(playerId: number, filter: CardFilter): CardDto[];
-  due(playerId: number, limit: number): CardDto[];
+  /** Cartas vencidas de um estágio, das mais atrasadas para as mais recentes. `dayStart` separa "hoje" dos outros dias. */
+  dueByStage(playerId: number, stage: DueStage, dayStart: Date, limit: number): CardDto[];
+  countDue(playerId: number, dayStart: Date): DueCount;
+  /** Cartas distintas estudadas desde `dayStart`: as que estrearam hoje e as que já vinham de outros dias. */
+  studiedSince(playerId: number, dayStart: Date): DailyCount;
   one(playerId: number, expressionId: string): CardDto | null;
 }

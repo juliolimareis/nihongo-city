@@ -10,6 +10,7 @@ import { StartEvent } from './application/game/start-event';
 import { ListCards } from './application/deck/list-cards';
 import { ListDueCards } from './application/deck/list-due-cards';
 import { ReviewCard } from './application/deck/review-card';
+import { StudyDay } from './application/deck/study-day';
 import { GetProfile } from './application/player/get-profile';
 import { LoginPlayer } from './application/player/login-player';
 import { ProfileAssembler } from './application/player/profile-assembler';
@@ -71,10 +72,11 @@ export function buildContainer(config: Config) {
   // Serviços técnicos
   const reading = new KuromojiReadingService();
   const network = new OsNetworkInfo();
-  const https = new MutableHttpsEndpoint(config.publicHost);
+  const https = new MutableHttpsEndpoint(config.publicHost, config.publicUrl);
 
   // Serviços de aplicação compartilhados
-  const profiles = new ProfileAssembler(settings, stats);
+  const studyDay = new StudyDay(settings, cardQuery, clock);
+  const profiles = new ProfileAssembler(settings, stats, studyDay);
   const selector = new ScenarioSelector(events, random);
   const assembler = new ScenarioAssembler(expressions, npcs, random);
   const locator = new SessionLocator(sessions, clock);
@@ -89,7 +91,7 @@ export function buildContainer(config: Config) {
     },
     cards: {
       listCards: new ListCards(players, cardQuery),
-      listDueCards: new ListDueCards(players, cardQuery),
+      listDueCards: new ListDueCards(players, studyDay),
       reviewCard: new ReviewCard(players, cards, reviews, cardQuery, new Sm2Scheduling(), clock, uow),
     },
     game: {

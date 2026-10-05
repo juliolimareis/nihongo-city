@@ -16,7 +16,7 @@ export interface SettingsRepository {
   update(playerId: number, patch: SettingsPatch): void;
 }
 
-/** Read model: contadores do HUD. */
+/** Read model: contadores do HUD (o que cabe no limite diário é calculado pelo baralho). */
 export interface PlayerStatsQuery {
-  statsFor(playerId: number): StatsDto;
+  statsFor(playerId: number): Omit<StatsDto, 'dueToday'>;
 }

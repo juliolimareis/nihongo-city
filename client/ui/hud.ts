@@ -11,5 +11,5 @@ export function renderHud(store: Store): void {
   $('#hud-xp').style.width = `${levelProgress(p.xp) * 100}%`;
   ($('#hud-level').parentElement as HTMLElement).title = `Nível ${p.level} · ${p.xp} XP`;
   $('#badge-cards').textContent = stats.cards ? String(stats.cards) : '';
-  $('#badge-due').textContent = stats.due ? String(stats.due) : '';
+  $('#badge-due').textContent = stats.dueToday ? String(stats.dueToday) : '';
 }

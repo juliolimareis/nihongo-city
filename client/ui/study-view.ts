@@ -1,4 +1,4 @@
-import type { CardDto, Rating, StudyMode } from '../../shared/contracts';
+import type { CardDto, Rating, StudyDayDto, StudyMode } from '../../shared/contracts';
 import type { AudioPort, GameApi, RemoteMicrophone, SpeechRecognizer } from '../application/ports';
 import type { SpeechMatcher } from '../application/speech-matcher';
 import type { Store } from '../application/store';
@@ -16,6 +16,7 @@ const MODES: Record<ModeChoice, { label: string; title?: string }> = {
   read: { label: '📖 Ler e traduzir', title: 'Traduza para o português' },
   write: { label: '✍️ Escrever em kana', title: 'Escreva em japonês' },
 };
+const SESSION_SIZE = 20;
 const WRITE_MAX_LEN = 14;
 const PASS_SPEECH = 0.75;
 const PASS_TRANSLATION = 0.75;
@@ -63,19 +64,32 @@ export class StudyView {
       },
     });
 
-    const queue = practice
-      ? shuffle(await api.cards(playerId)).slice(0, 15)
-      : await api.dueCards(playerId, 20);
+    let today: StudyDayDto | null = null;
+    let queue: CardDto[];
+    if (practice) queue = shuffle(await api.cards(playerId)).slice(0, 15);
+    else ({ cards: queue, today } = await api.dueCards(playerId, SESSION_SIZE));
 
     if (!queue.length) {
       const total = (await api.cards(playerId)).length;
+      const held = today ? today.held : 0;
+      let icon = '🗺️';
+      let title = 'Seu baralho está vazio';
+      let text = 'Explore a cidade e converse com os NPCs — cada frase vira uma carta.';
+      if (today && held) {
+        icon = '🌙';
+        title = 'Limite de hoje atingido!';
+        text = `Hoje você já estudou ${today.newDone} de ${today.newLimit} cartas novas e ${today.reviewsDone} de ${today.reviewsLimit} revisões. `
+          + `${held} carta(s) ficam para amanhã — o limite pode ser mudado nas configurações.`;
+      } else if (total) {
+        icon = '🎉';
+        title = 'Nenhuma carta para revisar agora!';
+        text = 'Você está em dia. Volte mais tarde ou pratique as cartas que já tem.';
+      }
       root.replaceChildren(html(`
         <div class="study__done">
-          <p style="font-size:2.5rem;margin:0">${total ? '🎉' : '🗺️'}</p>
-          <h3>${total ? 'Nenhuma carta para revisar agora!' : 'Seu baralho está vazio'}</h3>
-          <p>${total
-            ? 'Você está em dia. Volte mais tarde ou pratique as cartas que já tem.'
-            : 'Explore a cidade e converse com os NPCs — cada frase vira uma carta.'}</p>
+          <p style="font-size:2.5rem;margin:0">${icon}</p>
+          <h3>${title}</h3>
+          <p>${text}</p>
           <div class="study__row">
             ${total ? '<button type="button" class="btn btn--primary" data-practice>Praticar mesmo assim</button>' : ''}
             <button type="button" class="btn" data-close>Voltar à cidade</button>
@@ -116,19 +130,25 @@ export class StudyView {
       $('.study__count', top).textContent = `${done}/${total}${practice ? ' · prática livre' : ''}`;
     };
 
+    // Cartas do limite de hoje que não couberam nesta sessão.
+    const left = today ? Math.max(0, today.available - total) : 0;
+
     const finishSession = (): void => {
       stage.replaceChildren(html(`
         <div class="study__done">
           <p style="font-size:2.5rem;margin:0">🌸</p>
           <h3 lang="ja">お疲れ様でした！</h3>
           <p>Sessão concluída: ${correctCount} de ${total} acertos de primeira.</p>
+          ${left ? `<p>Ainda há ${left} carta(s) no limite de hoje.</p>` : ''}
           <div class="study__row">
-            <button type="button" class="btn btn--primary" data-more>Praticar mais</button>
+            ${left ? '<button type="button" class="btn btn--primary" data-next>Continuar revisando</button>' : ''}
+            <button type="button" class="btn${left ? '' : ' btn--primary'}" data-more>Praticar mais</button>
             <button type="button" class="btn" data-close>Voltar à cidade</button>
           </div>
         </div>`));
       modes.hidden = true;
       audio.sfx('card');
+      stage.querySelector('[data-next]')?.addEventListener('click', () => { void this.open(); });
       $('[data-more]', stage).addEventListener('click', () => { void this.open({ practice: true }); });
       $('[data-close]', stage).addEventListener('click', () => modal.close());
     };

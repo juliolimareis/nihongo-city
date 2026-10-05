@@ -102,11 +102,18 @@ export interface SettingsDto {
   current_scene: string;
   invites_on: boolean;
   invite_frequency: InviteFrequency;
+  /** Cartas nunca estudadas liberadas por dia. */
+  daily_new_cards: number;
+  /** Cartas já vistas em dias anteriores liberadas por dia. */
+  daily_reviews: number;
 }
 
 export interface StatsDto {
   cards: number;
+  /** Cartas vencidas, sem considerar o limite diário. */
   due: number;
+  /** Cartas que ainda podem ser estudadas hoje dentro do limite diário. */
+  dueToday: number;
   events: number;
   successes: number;
 }
@@ -145,6 +152,23 @@ export interface CardDto {
   lapses: number;
   hits: number;
   misses: number;
+}
+
+/** Andamento do limite diário de estudo. */
+export interface StudyDayDto {
+  newDone: number;
+  newLimit: number;
+  reviewsDone: number;
+  reviewsLimit: number;
+  /** Cartas disponíveis agora dentro do limite. */
+  available: number;
+  /** Cartas vencidas que ficaram para outro dia por causa do limite. */
+  held: number;
+}
+
+export interface DueCardsResponse {
+  cards: CardDto[];
+  today: StudyDayDto;
 }
 
 export interface CardFilter {
