@@ -31,5 +31,7 @@ export interface NetworkInfo {
 /** Endereço público do servidor HTTPS (o celular precisa dele para usar o microfone). */
 export interface HttpsEndpoint {
   readonly publicHost: string | null;
+  /** URL base completa (túnel/proxy reverso); quando definida, substitui host e porta. */
+  readonly publicUrl: string | null;
   port(): number | null;
 }

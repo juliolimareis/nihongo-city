@@ -20,8 +20,9 @@ export class PairingInfoBuilder {
     const ips = this.network.lanAddresses();
     const host = this.https.publicHost || ips[0] || origin.hostname;
     const httpsPort = this.https.port();
-    const base = httpsPort ? `https://${host}:${httpsPort}` : `${origin.protocol}://${host}:${origin.localPort}`;
+    const local = httpsPort ? `https://${host}:${httpsPort}` : `${origin.protocol}://${host}:${origin.localPort}`;
+    const base = this.https.publicUrl || local;
     const url = `${base}/remote.html?c=${code}`;
-    return { code, url, qr: await this.qr.svg(url), alternatives: ips.slice(1) };
+    return { code, url, qr: await this.qr.svg(url), alternatives: this.https.publicUrl ? [] : ips.slice(1) };
   }
 }

@@ -21,7 +21,8 @@ async function start(): Promise<void> {
     https.createServer(cert, container.app).listen(config.httpsPort, () => {
       container.https.setPort(config.httpsPort);
       const ip = container.network.lanAddresses()[0];
-      console.log(`HTTPS (celular como microfone) em https://${ip || 'localhost'}:${config.httpsPort}`);
+      const local = `https://${config.publicHost || ip || 'localhost'}:${config.httpsPort}`;
+      console.log(`HTTPS (celular como microfone) em ${config.publicUrl || local}`);
     });
   } catch (err) {
     console.warn('HTTPS indisponível; o celular não conseguirá usar o microfone.', (err as Error).message);

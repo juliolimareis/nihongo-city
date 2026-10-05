@@ -47,11 +47,14 @@ Abra `http://localhost:3000`, digite seu nome e comece. Para usar o **celular co
 
 ### Variáveis de ambiente
 
+Podem ser definidas no ambiente ou em um arquivo `.env` na raiz do projeto (o ambiente tem prioridade).
+
 | Variável | Padrão | Uso |
 |---|---|---|
 | `PORT` | `3000` | Porta HTTP |
 | `HTTPS_PORT` | `3443` | Porta HTTPS (necessária para o microfone do celular) |
 | `PUBLIC_HOST` | IP da rede local | Host usado no QR code de pareamento |
+| `PUBLIC_URL` | — | URL externa completa para o celular (ex.: túnel da Cloudflare, `https://nihongo.exemplo.com`); substitui host e porta no QR code |
 | `NIHONGO_DB` | `server/db/nihongo.db` | Caminho do banco SQLite |
 | `NODE_ENV` | — | `production` desliga a recompilação automática do frontend |
 
