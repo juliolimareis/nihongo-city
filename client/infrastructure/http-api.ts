@@ -39,4 +39,9 @@ export const httpGameApi: GameApi = {
   dueCards: (player, limit = 20) => request('GET', `/api/cards/due?player=${player}&limit=${limit}`),
   review: (player, exprId, mode, rating) =>
     request('POST', `/api/cards/${encodeURIComponent(exprId)}/review`, { player, mode, rating }),
+
+  tvLibrary: (player) => request('GET', `/api/tv/videos?player=${player}`),
+  tvVideo: (player, videoId) => request('GET', `/api/tv/videos/${encodeURIComponent(videoId)}?player=${player}`),
+  tvTranscript: (videoId, part) => request('GET', `/api/tv/videos/${encodeURIComponent(videoId)}/parts/${part}/transcript`),
+  saveTvProgress: (player, videoId, part) => request('PUT', '/api/tv/progress', { player, videoId, part }),
 };

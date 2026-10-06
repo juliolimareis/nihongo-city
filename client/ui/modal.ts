@@ -4,11 +4,14 @@ import { $ } from './dom';
 export interface ModalOptions {
   narrow?: boolean;
   onClose?: () => void;
+  /** Chamado em todo fechamento (inclusive troca de conteúdo), antes de o conteúdo sair da página. */
+  onDetach?: () => void;
 }
 
 /** Janela modal única da TV (baralho, estudo, configurações, locais, pareamento). */
 export class Modal {
   private onModalClose: (() => void) | null = null;
+  private onModalDetach: (() => void) | null = null;
   private lastFocus: Element | null = null;
 
   constructor(private readonly store: Store) {}
@@ -23,7 +26,7 @@ export class Modal {
     });
   }
 
-  open(title: string, content: HTMLElement, { narrow = false, onClose }: ModalOptions = {}): void {
+  open(title: string, content: HTMLElement, { narrow = false, onClose, onDetach }: ModalOptions = {}): void {
     this.close(true);
     this.lastFocus = document.activeElement;
     $('#modal-title').textContent = title;
@@ -33,6 +36,7 @@ export class Modal {
     this.el.hidden = false;
     this.store.state.modalOpen = true;
     this.onModalClose = onClose || null;
+    this.onModalDetach = onDetach || null;
     requestAnimationFrame(() => (body.querySelector<HTMLElement>('[autofocus]') || $('#modal-close')).focus());
   }
 
@@ -40,6 +44,9 @@ export class Modal {
   close(silent = false): void {
     if (this.el.hidden) return;
     this.el.hidden = true;
+    const detach = this.onModalDetach;
+    this.onModalDetach = null;
+    detach?.();
     $('#modal-body').replaceChildren();
     this.store.state.modalOpen = false;
     const cb = this.onModalClose;

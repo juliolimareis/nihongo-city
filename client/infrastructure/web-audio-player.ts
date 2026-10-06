@@ -20,14 +20,27 @@ const NOTES: Record<SfxName, Note[]> = {
   fail: [[392, 0, 0.2], [330, 0.18, 0.2], [262, 0.36, 0.4]],
 };
 
-function fadeTo(el: HTMLAudioElement, target: number, ms: number): Promise<void> {
+// Um fade por elemento: dois ao mesmo tempo brigam pelo volume e o mais longo vence no final
+// (ex.: a música ficava presa no volume abaixado se a faixa trocasse durante uma fala).
+const fadeTokens = new WeakMap<HTMLAudioElement, number>();
+
+function cancelFade(el: HTMLAudioElement): number {
+  const token = (fadeTokens.get(el) || 0) + 1;
+  fadeTokens.set(el, token);
+  return token;
+}
+
+/** Leva o volume até `target`; resolve com false se outro fade assumiu o elemento antes do fim. */
+function fadeTo(el: HTMLAudioElement, target: number, ms: number): Promise<boolean> {
+  const token = cancelFade(el);
   const start = el.volume;
   const t0 = performance.now();
   return new Promise((resolve) => {
     const step = (now: number): void => {
+      if (fadeTokens.get(el) !== token) { resolve(false); return; }
       const k = Math.min(1, (now - t0) / ms);
       el.volume = Math.max(0, Math.min(1, start + (target - start) * k));
-      if (k < 1) requestAnimationFrame(step); else resolve();
+      if (k < 1) requestAnimationFrame(step); else resolve(true);
     };
     requestAnimationFrame(step);
   });
@@ -41,6 +54,7 @@ export class WebAudioPlayer implements AudioPort {
   private readonly bgm = [new Audio(), new Audio()];
   private active = 0;
   private ducked = 0;
+  private suspended = false;
   private fadeTimer: ReturnType<typeof setInterval> | undefined;
   private readonly voice = new Audio();
   private voiceDone: (() => void) | null = null;
@@ -65,10 +79,11 @@ export class WebAudioPlayer implements AudioPort {
     const prev = this.bgm[this.active];
     this.active = 1 - this.active;
     const next = this.bgm[this.active];
+    cancelFade(next); // um fade de saída pendente pausaria a faixa que acabou de começar
     next.src = this.playlist[this.trackIndex];
     next.volume = 0;
     next.play().then(() => fadeTo(next, this.musicTarget(), CROSSFADE_MS)).catch(() => {});
-    if (!prev.paused) fadeTo(prev, 0, CROSSFADE_MS).then(() => prev.pause());
+    if (!prev.paused) void fadeTo(prev, 0, CROSSFADE_MS).then((done) => { if (done) prev.pause(); });
 
     // Inicia o crossfade para a próxima faixa um pouco antes desta acabar.
     clearInterval(this.fadeTimer);
@@ -98,13 +113,19 @@ export class WebAudioPlayer implements AudioPort {
     const s = this.settings();
     this.voice.volume = s.voice_volume;
     const cur = this.bgm[this.active];
-    if (s.music_on) {
+    if (s.music_on && !this.suspended) {
       if (cur.paused && this.playlist.length) this.playTrack(this.trackIndex);
       else void fadeTo(cur, this.musicTarget(), 250);
     } else {
-      this.bgm.forEach((el) => fadeTo(el, 0, 250).then(() => el.pause()));
+      this.bgm.forEach((el) => fadeTo(el, 0, 250).then((done) => { if (done) el.pause(); }));
       clearInterval(this.fadeTimer);
     }
+  }
+
+  suspendMusic(on: boolean): void {
+    if (this.suspended === on) return;
+    this.suspended = on;
+    this.applySettings();
   }
 
   duck(on: boolean): void {

@@ -2,7 +2,7 @@ import type {
   DueCardsResponse,
   AttemptRequest, AttemptResponse, CardDto, CardFilter, FinishEventRequest, FinishEventResponse, InviteDto,
   LoginResponse, PairingDto, ProfileDto, Rating, RemoteAction, RemoteScreen, RemoteState, SceneDto, SettingsDto,
-  StartEventRequest, StartEventResponse, StudyMode,
+  StartEventRequest, StartEventResponse, StudyMode, TvLibraryDto, TvTranscriptDto, TvVideoDetailDto,
 } from '../../shared/contracts';
 
 // Portas que a UI usa; os adaptadores concretos ficam em infrastructure/ e são ligados em app/main.ts.
@@ -24,6 +24,11 @@ export interface GameApi {
   cards(player: number, filter?: CardFilter): Promise<CardDto[]>;
   dueCards(player: number, limit?: number): Promise<DueCardsResponse>;
   review(player: number, exprId: string, mode: StudyMode, rating: Rating): Promise<CardDto>;
+  /** Vídeos de "Estudar com TV", com a parte em que o jogador parou em cada um. */
+  tvLibrary(player: number): Promise<TvLibraryDto>;
+  tvVideo(player: number, videoId: string): Promise<TvVideoDetailDto>;
+  tvTranscript(videoId: string, part: number): Promise<TvTranscriptDto>;
+  saveTvProgress(player: number, videoId: string, part: number): Promise<unknown>;
 }
 
 export type SfxName = 'correct' | 'wrong' | 'card' | 'notify' | 'click' | 'blip' | 'fail';
@@ -34,6 +39,8 @@ export interface AudioPort {
   startMusic(urls: string[]): void;
   applySettings(): void;
   duck(on: boolean): void;
+  /** Para a música enquanto outra mídia toca (rádio/TV) e a retoma depois. */
+  suspendMusic(on: boolean): void;
   /** Toca uma fala; resolve quando termina ou é interrompida. Sem arquivo, usa a voz do navegador. */
   speak(url: string | null, fallbackText?: string): Promise<void>;
   stopVoice(): void;
@@ -66,6 +73,14 @@ export interface RemoteMicrophone {
   resume(): void;
   onConnectionChange(listener: (connected: boolean) => void): void;
   onAction(listener: (action: RemoteAction) => void): void;
+}
+
+export type SubtitleMode = 'off' | 'ja' | 'pt';
+
+/** Preferências de "Estudar com TV" guardadas neste navegador. */
+export interface TvPrefsStore {
+  subtitles(): SubtitleMode;
+  setSubtitles(mode: SubtitleMode): void;
 }
 
 export interface PlayerIdStore {

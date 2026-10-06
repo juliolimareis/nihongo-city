@@ -5,6 +5,7 @@ import { SpeechMatcher } from '../application/speech-matcher';
 import { Store } from '../application/store';
 import { HttpError, httpGameApi as api } from '../infrastructure/http-api';
 import { localPlayerStore as playerIds } from '../infrastructure/local-player-store';
+import { localTvPrefs as tvPrefs } from '../infrastructure/local-tv-prefs';
 import { SseRemoteMicrophone } from '../infrastructure/sse-remote-microphone';
 import { WebAudioPlayer } from '../infrastructure/web-audio-player';
 import { WebSpeechRecognizer } from '../infrastructure/web-speech-recognizer';
@@ -18,6 +19,7 @@ import { Modal } from '../ui/modal';
 import { PairingView } from '../ui/pairing-view';
 import { SettingsView } from '../ui/settings-view';
 import { StudyView } from '../ui/study-view';
+import { TvStudyView } from '../ui/tv-study-view';
 
 // ===== Composition root da TV: instancia os adaptadores e injeta nas views. =====
 
@@ -31,6 +33,13 @@ const modal = new Modal(store);
 
 const study = new StudyView({ store, api, audio, voice, remote, matcher, modal });
 const deck = new DeckView({ store, api, audio, modal, openStudy: () => { void study.open(); } });
+const tvStudy = new TvStudyView({
+  store, api, audio, modal, prefs: tvPrefs,
+  onBackgroundChange: (playing) => {
+    // Ilumina o botão da TV enquanto o áudio/vídeo toca em segundo plano.
+    document.getElementById('btn-tv')?.classList.toggle('is-on', playing);
+  },
+});
 const settingsView = new SettingsView({ store, settings, api, modal });
 const city = new CityView({ store, settings, audio, modal });
 const dialogue = new DialogueView({ store, api, audio, voice, remote, matcher });
@@ -86,6 +95,7 @@ async function enterGame(): Promise<void> {
   $('#btn-settings').addEventListener('click', () => settingsView.open());
   $('#btn-deck').addEventListener('click', () => { void deck.open(); });
   $('#btn-study').addEventListener('click', () => { void study.open(); });
+  $('#btn-tv').addEventListener('click', () => { void tvStudy.open(); });
 
   if (new URLSearchParams(location.search).has('edit')) {
     const { initHotspotEditor } = await import('../ui/hotspot-editor');
