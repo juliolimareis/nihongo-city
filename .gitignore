@@ -12,3 +12,6 @@ dist/
 ref-files/
 server/seed/anki_raw.json
 audios/voices/anki_*.mp3
+
+# Vídeos baixados pelo scripts/add_video.py (grandes e de terceiros)
+media/

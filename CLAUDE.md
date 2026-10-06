@@ -21,6 +21,16 @@ python generate_audio.py --slow     # also generate slow versions (_slow.mp3)
 # After running, always follow with: npm run seed
 ```
 
+### Vídeos do "Estudar com TV" (Python)
+```bash
+cd scripts && source .venv/bin/activate   # precisa de ffmpeg/ffprobe no PATH e de `npm run seed` já rodado
+python add_video.py <url-do-youtube>      # baixa, corta em partes de ~5 min e registra no SQLite
+python add_video.py <url> --force         # refaz um vídeo já adicionado
+python add_video.py --resub <id>           # baixa de novo só as legendas (não recorta o vídeo)
+python add_video.py --reindex             # recria as linhas do banco a partir de media/tv/*/manifest.json
+python add_video.py --remove <id>         # apaga arquivos e linhas do vídeo
+```
+
 ## Architecture
 
 **Nihongo City** is a browser-based Japanese-learning RPG set in Shibuya, targeting PT-BR speakers.
@@ -39,7 +49,7 @@ Everything is TypeScript, organized as DDD + hexagonal (ports & adapters) + SOLI
 shared/contracts.ts      HTTP/SSE DTOs shared by server and client (types only)
 server/src/
   domain/                pure rules, no Express/SQLite: entities, value objects, domain services, repository ports
-    content/ player/ deck/ event/ remote/ language/ shared/
+    content/ player/ deck/ event/ remote/ tv/ language/ shared/
   application/           use cases (one class, one `execute`), output ports (Clock, UnitOfWork, ReadingService…), DTO mappers
   infrastructure/        adapters: persistence/sqlite, http (Express routes → use cases), reading (kuromoji),
                          remote (in-memory sessions, QR, LAN IPs), tls, build (esbuild), seed (JSON source), config
@@ -50,7 +60,7 @@ client/
   domain/                pure logic: text matching, kana cycles, SRS dates
   application/           Store (state + events), ports (GameApi, AudioPort, SpeechRecognizer, RemoteMicrophone), SpeechMatcher, SettingsService
   infrastructure/        HTTP API, Web Audio, Web Speech, SSE remote mic, localStorage, polyfills
-  ui/                    views (city, dialogue, study, deck, settings, invites, pairing…), each receiving its dependencies in the constructor
+  ui/                    views (city, dialogue, study, deck, tv-study, settings, invites, pairing…), each receiving its dependencies in the constructor
   app/main.ts            TV composition root (+ start screen)
   phone/main.ts          phone (remote microphone) entrypoint
 ```
@@ -77,7 +87,12 @@ Audio files are named by `sha1(tts_text(jp))[:12].mp3` and stored in `audios/voi
 | `POST /api/reading` | `ConvertReading` (kanji → hiragana via kuromoji) |
 | `/api/players` | `player-routes.ts` → `LoginPlayer`, `GetProfile`, `UpdateSettings`, `ResetProgress` |
 | `/api/cards` | `card-routes.ts` → `ListCards`, `ListDueCards` (daily limit via `StudyDay` + `domain/deck/daily-limit.ts`), `ReviewCard` (SM-2 in `domain/deck/scheduling.ts`) |
+| `/api/tv` | `tv-routes.ts` → `ListTvVideos`, `GetTvVideo`, `GetTvTranscript`, `SaveTvProgress` |
 | `/api/remote/*` | `remote-routes.ts` → SSE sessions for phone mic, QR code |
+
+### Estudar com TV (rádio + vídeo)
+
+`scripts/add_video.py` is the only writer of `tv_videos`/`tv_parts`: it downloads a YouTube video with yt-dlp, cuts it with ffmpeg into ~5 min parts (`part_NN.mp4` H.264/AAC + `part_NN.mp3`) under `media/tv/<youtube_id>/` (git-ignored, served at `/media`), and stores each part's JP and PT-BR subtitle cues as JSON, with times relative to the part. The JP track must be the transcription of the audio itself (manual `ja`, else `ja-orig` / an automatic track without `tlang`): yt-dlp's plain automatic `ja` can be a machine translation of another audio track. PT-BR is the manual track or the automatic translation of that JP track. The schema still lives only in `schema.ts`, so the script requires the tables to exist. Each video folder keeps a `manifest.json` so `--reindex` can rebuild the DB rows. The client (`client/ui/tv-study-view.ts`) draws subtitles itself from those cues instead of using `<track>`; per-player progress is in `player_tv_progress`, the subtitle preference in localStorage.
 
 ### Remote phone feature
 

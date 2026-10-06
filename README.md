@@ -14,6 +14,7 @@ Feito para rodar na TV da sala (testado em TVs LG webOS), com o **celular como m
 - **Celular como microfone** — pareamento por QR code, HTTPS local com certificado autoassinado e comunicação TV ↔ celular via Server-Sent Events.
 - **Cultura, não só língua** — cada evento termina com uma dica cultural (etiqueta no trem, como pagar, regras do sentō…), e as frases trazem nível de formalidade (casual / polido / keigo) e notas de uso.
 - **Baralho com repetição espaçada (SM-2)** — três modos de estudo: ouvir e repetir, ler e traduzir, escrever em kana com teclado na tela.
+- **Estudar com TV** — trechos de ~5 min de vídeos do YouTube para ouvir (rádio) ou assistir (TV), com legenda em japonês ou PT-BR e o texto do trecho para ler e imprimir.
 - **Convites espontâneos** — se você fica parado, um NPC aparece chamando para um evento.
 - **313 expressões com áudio** e progresso salvo por nome (sem cadastro).
 
@@ -112,6 +113,22 @@ cd .. && npm run seed
 ```
 
 Os arquivos ficam em `audios/voices/<sha1>.mp3` e o campo `audio_file` de `expressions.json` é atualizado automaticamente.
+
+### Adicionando vídeos ao "Estudar com TV"
+
+Precisa do [ffmpeg](https://ffmpeg.org/) instalado (`sudo apt install ffmpeg`) e do banco já criado (`npm run seed`).
+
+```bash
+cd scripts && source .venv/bin/activate
+pip install -r requirements.txt
+python add_video.py "https://www.youtube.com/watch?v=..."   # baixa, corta e registra
+python add_video.py "<url>" --force                         # refaz um vídeo já adicionado
+python add_video.py --resub <id>                             # baixa de novo só as legendas (não recorta o vídeo)
+python add_video.py --reindex                               # recria o banco a partir dos arquivos
+python add_video.py --remove <id-do-video>                  # apaga o vídeo
+```
+
+O script baixa o vídeo (até 720p) e as legendas em japonês e PT-BR — as escritas à mão, se existirem; senão as automáticas/traduzidas do YouTube. Depois corta tudo em partes de 5 minutos, ajustando cada corte para uma pausa entre falas. Se a sobra final tiver menos de 2 minutos, as duas últimas partes dividem o tempo. Os arquivos ficam em `media/tv/<id>/` (fora do git) e cada vídeo vira um item na lista do jogo.
 
 ## 🤝 Contribuindo
 
