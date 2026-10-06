@@ -290,3 +290,57 @@ export interface SpeechResponse {
 export interface ApiError {
   error: string;
 }
+
+// ===== Estudar com TV (rádio + vídeo) =====
+
+/** Fala de uma legenda, em segundos a partir do início da parte. */
+export interface SubtitleCueDto {
+  start: number;
+  end: number;
+  text: string;
+}
+
+export interface TvVideoDto {
+  id: string;
+  title: string;
+  channel: string;
+  durationS: number;
+  thumbnail: string | null;
+  /** Quantidade de partes em que o vídeo foi cortado. */
+  parts: number;
+  /** Parte em que o jogador parou (começa em 1). */
+  part: number;
+}
+
+export interface TvLibraryDto {
+  videos: TvVideoDto[];
+  /** Vídeo que o jogador ouviu por último; null se ainda não ouviu nenhum. */
+  lastVideoId: string | null;
+}
+
+export interface TvPartDto {
+  index: number;
+  durationS: number;
+  audio: string;
+  video: string;
+}
+
+export interface TvVideoDetailDto extends TvVideoDto {
+  partList: TvPartDto[];
+}
+
+export interface TvTranscriptDto {
+  ja: SubtitleCueDto[];
+  pt: SubtitleCueDto[];
+}
+
+export interface TvProgressRequest {
+  player: number;
+  videoId: string;
+  part: number;
+}
+
+export interface TvProgressResponse {
+  videoId: string;
+  part: number;
+}

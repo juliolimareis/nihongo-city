@@ -36,6 +36,7 @@ function dedupePlayerNames(db: Db): void {
 const ADDED_COLUMNS: { table: string; column: string; ddl: string }[] = [
   { table: 'player_settings', column: 'daily_new_cards', ddl: 'INTEGER NOT NULL DEFAULT 10' },
   { table: 'player_settings', column: 'daily_reviews', ddl: 'INTEGER NOT NULL DEFAULT 50' },
+  { table: 'tv_videos', column: 'url', ddl: "TEXT NOT NULL DEFAULT ''" },
 ];
 
 function addMissingColumns(db: Db): void {

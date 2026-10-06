@@ -41,6 +41,7 @@ export const config = {
   musicDir: path.join(ROOT, 'audios', 'game-sounds'),
   imgDir: path.join(ROOT, 'img'),
   npcDir: path.join(ROOT, 'img', 'npcs'),
+  mediaDir: path.join(ROOT, 'media'),
 } as const;
 
 export type Config = typeof config;

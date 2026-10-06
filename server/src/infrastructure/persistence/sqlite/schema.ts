@@ -153,6 +153,39 @@ CREATE TABLE IF NOT EXISTS review_log (
   reviewed_at    TEXT    NOT NULL DEFAULT (datetime('now'))
 );
 
+-- ===== Estudar com TV (vídeos e partes gravados pelo scripts/add_video.py) =====
+
+CREATE TABLE IF NOT EXISTS tv_videos (
+  id              TEXT PRIMARY KEY,                 -- id do vídeo no YouTube
+  url             TEXT NOT NULL DEFAULT '',         -- URL canônica (usada para detectar reenvios)
+  title           TEXT NOT NULL,
+  channel         TEXT NOT NULL DEFAULT '',
+  duration_s      REAL NOT NULL,
+  thumbnail_file  TEXT,
+  added_at        TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS tv_parts (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  video_id    TEXT    NOT NULL REFERENCES tv_videos(id) ON DELETE CASCADE,
+  part_index  INTEGER NOT NULL,                     -- começa em 1
+  start_s     REAL    NOT NULL,
+  duration_s  REAL    NOT NULL,
+  video_file  TEXT    NOT NULL,                     -- relativo a media/tv/<video_id>/
+  audio_file  TEXT    NOT NULL,
+  subs_ja     TEXT    NOT NULL DEFAULT '[]',        -- JSON: [{start, end, text}] relativo ao início da parte
+  subs_pt     TEXT    NOT NULL DEFAULT '[]',
+  UNIQUE (video_id, part_index)
+);
+
+CREATE TABLE IF NOT EXISTS player_tv_progress (
+  player_id   INTEGER NOT NULL REFERENCES players(id) ON DELETE CASCADE,
+  video_id    TEXT    NOT NULL REFERENCES tv_videos(id) ON DELETE CASCADE,
+  part_index  INTEGER NOT NULL DEFAULT 1,
+  updated_at  TEXT    NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (player_id, video_id)
+);
+
 -- O nome é a chave de "login": um nome, um progresso (maiúsculas não contam).
 CREATE UNIQUE INDEX IF NOT EXISTS idx_players_name ON players(name COLLATE NOCASE);
 

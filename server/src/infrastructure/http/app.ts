@@ -4,12 +4,14 @@ import { type CardUseCases, cardRoutes } from './controllers/card-routes';
 import { type GameUseCases, gameRoutes } from './controllers/game-routes';
 import { type PlayerUseCases, playerRoutes } from './controllers/player-routes';
 import { type RemoteUseCases, remoteRoutes } from './controllers/remote-routes';
+import { type TvUseCases, tvRoutes } from './controllers/tv-routes';
 
 export interface StaticDirs {
   publicDir: string;
   audiosDir: string;
   npcDir: string;
   imgDir: string;
+  mediaDir: string;
 }
 
 export interface HttpUseCases {
@@ -17,6 +19,7 @@ export interface HttpUseCases {
   cards: CardUseCases;
   game: GameUseCases;
   remote: RemoteUseCases;
+  tv: TvUseCases;
 }
 
 export function createHttpApp(dirs: StaticDirs, uc: HttpUseCases): Express {
@@ -27,10 +30,12 @@ export function createHttpApp(dirs: StaticDirs, uc: HttpUseCases): Express {
   app.use('/audios', express.static(dirs.audiosDir, { maxAge: '7d' }));
   app.use('/npcs', express.static(dirs.npcDir, { maxAge: '1h' }));
   app.use('/img', express.static(dirs.imgDir, { maxAge: '7d' }));
+  app.use('/media', express.static(dirs.mediaDir, { maxAge: '1h' }));
 
   app.use('/api/players', playerRoutes(uc.player));
   app.use('/api/cards', cardRoutes(uc.cards));
   app.use('/api/remote', remoteRoutes(uc.remote));
+  app.use('/api/tv', tvRoutes(uc.tv));
   app.use('/api', gameRoutes(uc.game));
 
   app.use('/api', apiNotFound);

@@ -22,6 +22,10 @@ import { GetPairing } from './application/remote/get-pairing';
 import { PairingInfoBuilder } from './application/remote/pairing-info';
 import { PublishRemoteState, PurgeExpiredSessions, RelayAction, RelaySpeech } from './application/remote/relay';
 import { SessionLocator } from './application/remote/session-locator';
+import { GetTvTranscript } from './application/tv/get-tv-transcript';
+import { GetTvVideo } from './application/tv/get-tv-video';
+import { ListTvVideos } from './application/tv/list-tv-videos';
+import { SaveTvProgress } from './application/tv/save-tv-progress';
 import { Sm2Scheduling } from './domain/deck/scheduling';
 import { DefaultXpPolicy } from './domain/event/xp-policy';
 import type { Config } from './infrastructure/config';
@@ -37,6 +41,7 @@ import { SqliteAttemptRepository, SqliteGameEventRepository } from './infrastruc
 import {
   SqlitePlayerRepository, SqlitePlayerStatsQuery, SqliteSettingsRepository,
 } from './infrastructure/persistence/sqlite/player-repositories';
+import { SqliteTvProgressRepository, SqliteTvVideoRepository } from './infrastructure/persistence/sqlite/tv-repositories';
 import { SqliteUnitOfWork } from './infrastructure/persistence/sqlite/unit-of-work';
 import { KuromojiReadingService } from './infrastructure/reading/kuromoji-reading-service';
 import { CryptoPairingCodeGenerator } from './infrastructure/remote/crypto-pairing-code-generator';
@@ -67,6 +72,8 @@ export function buildContainer(config: Config) {
   const cardQuery = new SqliteCardQuery(db);
   const events = new SqliteGameEventRepository(db);
   const attempts = new SqliteAttemptRepository(db);
+  const tvVideos = new SqliteTvVideoRepository(db);
+  const tvProgress = new SqliteTvProgressRepository(db);
   const sessions = new InMemoryRemoteSessionRepository();
 
   // Serviços técnicos
@@ -87,7 +94,7 @@ export function buildContainer(config: Config) {
       login: new LoginPlayer(players, settings, profiles, uow),
       getProfile: new GetProfile(players, profiles),
       updateSettings: new UpdateSettings(players, settings, scenes),
-      resetProgress: new ResetProgress(players, cards, reviews, events, profiles, uow),
+      resetProgress: new ResetProgress(players, cards, reviews, events, tvProgress, profiles, uow),
     },
     cards: {
       listCards: new ListCards(players, cardQuery),
@@ -102,6 +109,12 @@ export function buildContainer(config: Config) {
       recordAttempt: new RecordAttempt(events, attempts, scenarios, uow),
       finishEvent: new FinishEvent(events, attempts, scenarios, expressions, cards, players, new DefaultXpPolicy(), clock, uow),
       convertReading: new ConvertReading(reading),
+    },
+    tv: {
+      listVideos: new ListTvVideos(players, tvVideos, tvProgress),
+      getVideo: new GetTvVideo(players, tvVideos, tvProgress),
+      getTranscript: new GetTvTranscript(tvVideos),
+      saveProgress: new SaveTvProgress(players, tvVideos, tvProgress, clock),
     },
     remote: {
       createSession: new CreateRemoteSession(players, sessions, new CryptoPairingCodeGenerator(), pairing, clock),
