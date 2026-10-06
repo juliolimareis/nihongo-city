@@ -38,17 +38,23 @@ export class StudyView {
 
   constructor(private readonly deps: StudyViewDeps) {}
 
-  private feasibleModes(card: CardDto): StudyMode[] {
+  private get micAvailable(): boolean {
     const { remote, voice } = this.deps;
+    return remote.connected || (voice.supported && !voice.denied);
+  }
+
+  /** Modos que o "Misturado" pode sortear: sem microfone não sorteia fala, e frase longa não vai para o teclado. */
+  private feasibleModes(card: CardDto): StudyMode[] {
     const modes: StudyMode[] = ['read'];
-    if (remote.connected || (voice.supported && !voice.denied)) modes.push('audio');
+    if (this.micAvailable) modes.push('audio');
     if (normalizeJp(card.kana).length <= WRITE_MAX_LEN) modes.push('write');
     return modes;
   }
 
+  /** Um modo escolhido no botão vale para todas as cartas; só o "Misturado" sorteia. */
   private pickMode(card: CardDto): StudyMode {
+    if (this.fixedMode !== 'random') return this.fixedMode;
     const ok = this.feasibleModes(card);
-    if (this.fixedMode !== 'random' && ok.includes(this.fixedMode)) return this.fixedMode;
     return ok[Math.floor(Math.random() * ok.length)];
   }
 
@@ -104,6 +110,8 @@ export class StudyView {
     let done = 0;
     let correctCount = 0;
     const requeued = new Set<string>();
+    // Carta já respondida esperando a avaliação: trocar de modo só vale a partir da próxima.
+    let answered = false;
 
     const top = html(`
       <div class="study__top">
@@ -122,7 +130,7 @@ export class StudyView {
       if (!b) return;
       this.fixedMode = b.dataset.mode as ModeChoice;
       modes.querySelectorAll('[data-mode]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-      showCard();
+      if (!answered) showCard();
     });
 
     const updateProgress = (): void => {
@@ -154,6 +162,7 @@ export class StudyView {
     };
 
     const showAnswer = (card: CardDto, mode: StudyMode, ok: boolean, extra = ''): void => {
+      answered = true;
       audio.sfx(ok ? 'correct' : 'wrong');
       if (mode === 'audio') {
         remote.setState({ mode: 'result', result: { ok, title: ok ? '✓ Correto!' : '✗ Ainda não…', message: `${card.jp} — ${card.pt}` } });
@@ -226,6 +235,11 @@ export class StudyView {
           `<p><small>Você disse:</small> <span class="jp" lang="ja">${esc(heard[0])}</span> <small>(${Math.round(score * 100)}% parecido)</small></p>`);
         return true;
       };
+
+      if (!this.micAvailable) {
+        mic.hidden = true;
+        status.textContent = 'Sem microfone: ouça, repita em voz alta e toque em "Mostrar resposta" para se avaliar.';
+      }
 
       if (remote.connected) {
         // Com o celular, a TV só espera: o jogador fala no celular.
@@ -301,6 +315,7 @@ export class StudyView {
       audio.stopVoice();
       remote.cancelListen();
       remote.setState({ mode: 'idle' });
+      answered = false;
       const card = queue[0];
       if (!card) { finishSession(); return; }
       const mode = this.pickMode(card);
